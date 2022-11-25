@@ -1,0 +1,7 @@
+﻿  algoritmo.c
+  funcao.c
+  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(31,13): warning C4013: 'gets' undefined; assuming extern returning int
+  utils.c
+  Generating Code...
+  Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe
