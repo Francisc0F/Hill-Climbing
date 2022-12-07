@@ -6,11 +6,11 @@
 // Leitura do ficheiro de input
 // Recebe: nome do ficheiro, numero de vertices (ptr), numero de iteracoes (ptr)
 // Devolve a matriz de adjacencias
-int* init_dados(char *nome, int *n, int *iter)
+int* init_dados(char *nome, int *n, int *iter, int* k)
 {
 	FILE *f = NULL;
-	int *p, *q;
-	int i, j;
+	int *p = NULL, *q = NULL;
+	int i = 0, j;
 
 	errno_t err = fopen_s(&f, nome, "r");
 	if(err != 0)
@@ -18,23 +18,43 @@ int* init_dados(char *nome, int *n, int *iter)
 		printf("Erro no acesso ao ficheiro dos dados\n");
 		exit(1);
 	}
-	// Numero de iteracoes
-	fscanf_s(f, " %d", iter);
-	// Numero de vertices
-	fscanf_s(f, " %d", n);
+	
+
+	/*char kstr[60] = { '/0' };
+	fgets(kstr, 60, f);
+	
+	char pedge[60] = { '/0' };
+	fgets(pedge, 60, f);*/
+	int arestas = 0;
+
+	fscanf_s(f, "k %d\n", k);
+	fscanf_s(f, "p edge %d %d", n, &arestas);
+
+
+	
 	// Alocacao dinamica da matriz
-	p = malloc(sizeof(int)*(*n)*(*n));
+	printf("k = %d\n", *k);
+	printf("n = %d\n", *n);
+	printf("edges = %d", arestas);
+
+
+	/*p = malloc(sizeof(int)*(*n)*(*n));
 	if(!p)
 	{
 	    printf("Erro na alocacao de memoria\n");
 	    exit(1);
 	}
-	q=p;
+	q=p;*/
+
+
+
+
+
 	// Preenchimento da matriz
-	for(i=0; i<*n; i++)
+	/*for(i=0; i<*n; i++)
         for(j=0; j<*n; j++)
 			fscanf_s(f, " %d", q++);
-	fclose(f);
+	fclose(f);*/
 	return p;
 }
 
