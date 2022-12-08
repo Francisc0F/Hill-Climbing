@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	//for(k=0; k<runs; k++)
-	//{
-	//	// Gerar solucao inicial
-	//	gera_sol_inicial(sol, vert);
-	//	escreve_sol(sol, vert);
+	for(k=0; k<runs; k++)
+	{
+		// Gerar solucao inicial
+		gera_sol_inicial(sol, vert);
+		escreve_sol(sol, vert);
 	//	// Trepa colinas
 	//	custo = trepa_colinas(sol, grafo, vert, num_iter);
 	//	// Escreve resultados da repeticao k
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	//		best_custo = custo;
 	//		substitui(best, sol, vert);
 	//	}
- //   }
+	}
 
 
 	// Escreve eresultados globais

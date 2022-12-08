@@ -1,3 +1,5 @@
-﻿  utils.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(13,13): warning C4101: 'j': unreferenced local variable
+﻿  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(31,13): warning C4013: 'gets' undefined; assuming extern returning int
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(12,38): warning C4101: 'custo': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(12,45): warning C4101: 'best_custo': unreferenced local variable
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe
