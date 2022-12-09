@@ -9,7 +9,7 @@ int calcula_fit(int a[], int *mat, int vert)
 	int i, j;
 
 	for(i=0; i<vert; i++)
-		if(a[i]==0)
+		if(a[i]==1)
 		{
 			for(j=0; j<vert;j++)
 				if(a[j]==1 && *(mat+i*vert+j)==1)

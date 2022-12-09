@@ -6,7 +6,7 @@
 // Leitura do ficheiro de input
 // Recebe: nome do ficheiro, numero de vertices (ptr), numero de iteracoes (ptr)
 // Devolve a matriz de adjacencias
-int* init_dados(char* nome, int* n, int* iter, int* k)
+int* init_dados(char* nome, int* vert, int* iter, int* nConjunto)
 {
 	FILE* f = NULL;
 	int* p = NULL, * q = NULL;
@@ -19,18 +19,12 @@ int* init_dados(char* nome, int* n, int* iter, int* k)
 		exit(1);
 	}
 
-	int arestas = 0;
+	int edges = 0;
 
-	fscanf_s(f, "k %d\n", k);
-	fscanf_s(f, "p edge %d %d\n", n, &arestas);
+	fscanf_s(f, "k %d\n", nConjunto);
+	fscanf_s(f, "p edge %d %d\n", vert, &edges);
 
-	// Alocacao dinamica da matriz
-	/*printf("k = %d\n", *k);
-	printf("n = %d\n", *n);
-	printf("edges = %d\n", arestas);*/
-
-
-	p = malloc(sizeof(int) * (*n) * (*n));
+	p = malloc(sizeof(int) * (*vert) * (*vert));
 	if (!p)
 	{
 		printf("Erro na alocacao de memoria\n");
@@ -38,9 +32,9 @@ int* init_dados(char* nome, int* n, int* iter, int* k)
 	}
 
 	// Preenchimento da matriz
-	for (i = 0; i < *n; i++) {
-		for (j = 0; j < *n; j++) {
-			p[i * (*n) + j] = 0;
+	for (i = 0; i < *vert; i++) {
+		for (j = 0; j < *vert; j++) {
+			p[i * (*vert) + j] = 0;
 		}
 	}
 	int count = 1;
@@ -51,14 +45,14 @@ int* init_dados(char* nome, int* n, int* iter, int* k)
 		if (count > 0) {
 			auxI--;
 			auxJ--;
-			p[auxI * (*n) + auxJ] = 1;
+			p[auxI * (*vert) + auxJ] = 1;
 		}
 	} while (count > 0);
 
 
-	for (i = 0; i < *n; i++) {
-		for (j = 0; j < *n; j++) {
-			printf("%d ", p[i * (*n) + j]);
+	for (i = 0; i < *vert; i++) {
+		for (j = 0; j < *vert; j++) {
+			printf("%d ", p[i * (*vert) + j]);
 		}
 		printf("\n");
 	}
@@ -70,13 +64,15 @@ int* init_dados(char* nome, int* n, int* iter, int* k)
 
 // Gera a solucao inicial
 // Parametros: solucao, numero de vertices
-void gera_sol_inicial(int* sol, int v)
+void gera_sol_inicial(int* sol, int v, int nConjunto)
 {
 	int i, x;
 
 	for (i = 0; i < v; i++)
 		sol[i] = 0;
-	for (i = 0; i < v / 2; i++)
+
+
+	for (i = 0; i < nConjunto; i++)
 	{
 		do
 			x = random_l_h(0, v - 1);
@@ -94,11 +90,11 @@ void escreve_sol(int* sol, int vert)
 	printf("\nConjunto A: ");
 	for (i = 0; i < vert; i++)
 		if (sol[i] == 0)
-			printf("%2d  ", i);
+			printf("%2d  ", i + 1);
 	printf("\nConjunto B: ");
 	for (i = 0; i < vert; i++)
 		if (sol[i] == 1)
-			printf("%2d  ", i);
+			printf("%2d  ", i +1);
 	printf("\n");
 }
 

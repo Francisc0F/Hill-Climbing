@@ -11,16 +11,20 @@ void gera_vizinho(int a[], int b[], int n)
 {
     int i, p1, p2;
 
+    //copia elementos
     for(i=0; i<n; i++)
         b[i]=a[i];
+
 	// Encontra posicao com valor 0
     do
         p1=random_l_h(0, n-1);
     while(b[p1] != 0);
-	// Encontra posicao com valor 0
+
+	// Encontra posicao com valor 1
     do
         p2=random_l_h(0, n-1);
     while(b[p2] != 1);
+
 	// Troca
     b[p1] = 1;
     b[p2] = 0;
@@ -47,8 +51,9 @@ int trepa_colinas(int sol[], int *mat, int vert, int num_iter)
 		gera_vizinho(sol, nova_sol, vert);
 		// Avalia vizinho
 		custo_viz = calcula_fit(nova_sol, mat, vert);
-		// Aceita vizinho se o custo diminuir (problema de minimizacao)
-        if(custo_viz < custo)
+		// Aceita vizinho se o custo aumentar (problema de maximizacao) e aceita planaltos
+        //queremos apanhar o maior numero de arestas entre os elementos
+        if(custo_viz >= custo)
         {
 			substitui(sol, nova_sol, vert);
 			custo = custo_viz;
