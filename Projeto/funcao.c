@@ -1,19 +1,23 @@
 #include "funcao.h"
 
-// Calcula a qualidade de uma solução
-// Recebe:  A solução, a, a matriz de adjacências, mat, e o número de vértices, vert
-// Devolve: O custo que é o número de ligações que existem na solução
-int calcula_fit(int a[], int *mat, int vert)
+/*
+ Calcula fitnesss = total
+ Recebe:  A solução, sol, a matriz de adjacências, mat, e o número de vértices, vert
+ Devolve: O custo que é o número de ligações que existem na solução
+
+ Restriction it only works with a upper triangular matrix, with main diagonal = 0
+*/
+int calcula_fit(int sol[], int *mat, int vert)
 {
-	int total=0;
+	int fitness =0;
 	int i, j;
 
 	for(i=0; i<vert; i++)
-		if(a[i]==1)
+		if(sol[i]==1)
 		{
 			for(j=0; j<vert;j++)
-				if(a[j]==1 && *(mat+i*vert+j)==1)
-				    total++;
+				if(sol[j]==1 && *(mat+i*vert+j)==1)
+					fitness++;
 		}
-	return total;
+	return fitness;
 }

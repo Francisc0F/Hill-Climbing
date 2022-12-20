@@ -6,37 +6,50 @@
 // Leitura do ficheiro de input
 // Recebe: nome do ficheiro, numero de vertices (ptr), numero de iteracoes (ptr)
 // Devolve a matriz de adjacencias
-int* init_dados(char* nome, int* vert, int* iter, int* nConjunto)
-{
-	FILE* f = NULL;
-	int* p = NULL, * q = NULL;
-	int i = 0, j;
 
-	errno_t err = fopen_s(&f, nome, "r");
-	if (err != 0)
-	{
-		printf("Erro no acesso ao ficheiro dos dados\n");
-		exit(1);
-	}
 
-	int edges = 0;
 
-	fscanf_s(f, "k %d\n", nConjunto);
-	fscanf_s(f, "p edge %d %d\n", vert, &edges);
+typedef void (*FuncPtr)(int*, int, int, int);
+typedef struct {
+	int* p;
+} PrintArgs;
 
-	p = malloc(sizeof(int) * (*vert) * (*vert));
-	if (!p)
-	{
-		printf("Erro na alocacao de memoria\n");
-		exit(1);
-	}
+typedef struct {
+	int* p;
+	int n; // value
+} SetValueArgs;
 
-	// Preenchimento da matriz
-	for (i = 0; i < *vert; i++) {
-		for (j = 0; j < *vert; j++) {
-			p[i * (*vert) + j] = 0;
+
+void print_element(void* args, int i, int j, int tam) {
+	PrintArgs* a = (PrintArgs*)args;
+	printf("%d ", a->p[i * tam + j]);
+};
+
+typedef struct {
+	void (*func)(void* args, int, int, int);
+	int* p; // Pointer to the array
+	int i;
+	int j;
+	void* args;
+} LoopCode;
+
+
+void set_value(void* args, int i, int j, int tam) {
+	SetValueArgs* a = (SetValueArgs*)args;
+	a->p[i * tam + j] = a->n;
+}
+
+void execute_loop(LoopCode loop_code, int tam) {
+	for (int i = 0; i < tam; i++) {
+		for (int j = 0; j < tam; j++) {
+				loop_code.func(loop_code.args, i, j, tam);
 		}
+		printf("\n");
 	}
+}
+
+void fill_adjacent_matrix(FILE* f, int* p, int* vert)
+{
 	int count = 1;
 	do {
 		int auxI = 0;
@@ -48,31 +61,79 @@ int* init_dados(char* nome, int* vert, int* iter, int* nConjunto)
 			p[auxI * (*vert) + auxJ] = 1;
 		}
 	} while (count > 0);
+}
 
+int* allocate_matrix(int rows, int cols) {
+	// Allocate memory for the array
+	int* matrix = malloc(sizeof(int) * rows * cols);
 
-	for (i = 0; i < *vert; i++) {
-		for (j = 0; j < *vert; j++) {
-			printf("%d ", p[i * (*vert) + j]);
-		}
-		printf("\n");
+	// Check if the allocation was successful
+	if (!matrix) {
+		printf("Error allocating memory for the matrix\n");
+		exit(1);
 	}
 
+	return matrix;
+}
+
+FILE* open_file(const char* filename) {
+	// Open the file for reading
+	FILE* f = NULL;
+	errno_t err = fopen_s(&f, filename, "r");
+
+	// Check if the file was successfully opened
+	if (err != 0) {
+		printf("Error accessing file: %s\n", filename);
+		exit(1);
+	}
+
+	return f;
+}
+
+
+int* init_dados(char* nome, int* vert, int* subsetNum)
+{
+	FILE* f = open_file(nome);
+
+	int edges = 0;
+	fscanf_s(f, "k %d\n", subsetNum);
+	fscanf_s(f, "p edge %d %d\n", vert, &edges);
+
+	int* p = allocate_matrix((*vert), (*vert));
+
+	SetValueArgs args = {.n = 0, .p = p};
+	LoopCode code = { set_value, .args  = &args };
+	execute_loop(code, *vert);
+
+	fill_adjacent_matrix(f, p, vert);
+
+	PrintArgs pargs = {  .p = p };
+	LoopCode print = { print_element,.p = p, .args = &pargs };
+	execute_loop(print, *vert);
 
 	fclose(f);
 	return p;
 }
 
-// Gera a solucao inicial
-// Parametros: solucao, numero de vertices
-void gera_sol_inicial(int* sol, int v, int nConjunto)
+
+
+
+/*
+ * Generates an initial solution
+ * sol: array to store the solution
+ * v: size of the 1D array
+ * subsetNum: number of elements to include in the solution
+ */
+void gera_sol_inicial(int* sol, int v, int subsetNum)
 {
 	int i, x;
 
+	// Initialize all elements of the solution array to 0
 	for (i = 0; i < v; i++)
 		sol[i] = 0;
 
-
-	for (i = 0; i < nConjunto; i++)
+	// Randomly select subsetNum elements and set their value to 1
+	for (i = 0; i < subsetNum; i++)
 	{
 		do
 			x = random_l_h(0, v - 1);
@@ -87,11 +148,11 @@ void escreve_sol(int* sol, int vert)
 {
 	int i;
 
-	printf("\nConjunto A: ");
+	printf("\nSubset A: ");
 	for (i = 0; i < vert; i++)
 		if (sol[i] == 0)
 			printf("%2d  ", i + 1);
-	printf("\nConjunto B: ");
+	printf("\nSubset B: ");
 	for (i = 0; i < vert; i++)
 		if (sol[i] == 1)
 			printf("%2d  ", i +1);
@@ -122,4 +183,33 @@ int random_l_h(int min, int max)
 float rand_01()
 {
 	return ((float)rand()) / RAND_MAX;
+}
+
+
+void process_args(int argc, char* argv[], char* filename, int* runs) {
+	// Set default values
+	*runs = DEFAULT_RUNS;
+
+	if (argc == 3) {
+		// Set the number of runs from the command-line argument
+		*runs = atoi(argv[2]);
+		// Set the filename from the command-line argument
+		strcpy_s(filename, sizeof(filename), argv[1]);
+	}
+	else if (argc == 2) {
+		// Set the number of runs to the default value
+		*runs = DEFAULT_RUNS;
+		// Set the filename from the command-line argument
+		strcpy_s(filename, sizeof(filename), argv[1]);
+	}
+	else {
+		// Prompt the user for the filename
+		printf("Nome ficheiro: ");
+		gets(filename);
+	}
+
+	// Check if the number of runs is valid
+	if (*runs <= 0) {
+		exit(0);
+	}
 }
