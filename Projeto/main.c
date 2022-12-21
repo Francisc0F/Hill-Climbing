@@ -4,6 +4,7 @@
 #include <string.h>
 #include "algoritmo.h"
 #include "utils.h"
+#include "main.h"
 
 #define MAX_FILES 10
 
@@ -12,6 +13,19 @@ typedef struct {
 	int runs;
 }thread_arg_t;
 
+
+
+void print_general_results(const char* nome_fich, int vert, float mbf, int k, int* best, int best_custo)
+{
+	printf("-----------------------------------------\n");
+	printf("Ficheiro: %s\n", nome_fich);
+	printf("Vertices: %d\n", vert);
+	printf("MBF: %f\n", mbf / k);
+	printf("Melhor solucao encontrada\n");
+	escreve_sol(best, vert);
+	printf("Custo final: %2d\n", best_custo);
+	printf("-----------------------------------------\n\n");
+}
 
 void run_for_file(const char* nome_fich, int runs) {
 
@@ -28,13 +42,13 @@ void run_for_file(const char* nome_fich, int runs) {
 	{
 		// Gerar solucao inicial
 		gera_sol_inicial(sol, vert, nConjunto);
-		escreve_sol(sol, vert);
+		//escreve_sol(sol, vert);
 		// Trepa colinas
 		custo = trepa_colinas(sol, grafo, vert, num_iter);
 		// Escreve resultados da repeticao k
-		printf("\nRepeticao %d:", k);
-		escreve_sol(sol, vert);
-		printf("Custo final: %2d\n", custo);
+		//printf("\nRepeticao %d:", k);
+		//escreve_sol(sol, vert);
+		//printf("Custo final: %2d\n", custo);
 		mbf += custo;
 		if (k == 0 || custo >= best_custo)
 		{
@@ -44,14 +58,9 @@ void run_for_file(const char* nome_fich, int runs) {
 	}
 
 	// Escreve resultados globais
-	printf("-----------------------------------------");
-	printf("Ficheiro: %s\n", nome_fich);
-	printf("Vertices: %d\n", vert);
-	printf("\n\nMBF: %f\n", mbf / k);
-	printf("\nMelhor solucao encontrada");
-	escreve_sol(best, vert);
-	printf("Custo final: %2d\n", best_custo);
-	printf("-----------------------------------------\n");
+	print_general_results(nome_fich, vert, mbf, k, best, best_custo);
+
+
 	free(grafo);
 	free(sol);
 	free(best);
@@ -64,12 +73,16 @@ DWORD WINAPI process_file(LPVOID lpParameter) {
 	return NULL;
 }
 
-void lunch_threads(char** files, int runs) {
+void lunch_threads(char** files,int num_files, int runs) {
 	// Create a separate thread for each file
-	HANDLE threads[sizeof(files) / sizeof(char*)];
-	int num_files = sizeof(files) / sizeof(char*);
+	HANDLE threads[MAX_FILES] = {0};
 	for (int i = 0; i < num_files; i++) {
 		thread_arg_t* arg = (thread_arg_t*)malloc(sizeof(thread_arg_t));
+		if (arg == NULL) {
+			printf("Error Alocating thread_arg_t*)malloc(sizeof(thread_arg_t: %d\n", GetLastError());
+			exit(1);
+		}
+
 		arg->file = files[i];
 		arg->runs = runs;
 		threads[i] = CreateThread(NULL, 0, process_file, arg, 0, NULL);
@@ -89,8 +102,7 @@ void lunch_threads(char** files, int runs) {
 	printf("All threads complete.\n");
 }
 
-
-void find_test_files(char** files) {
+void find_test_files(char** files,int* num_files) {
 	char currentDir[MAX_PATH];
 	GetCurrentDirectoryA(MAX_PATH, currentDir);
 
@@ -112,77 +124,94 @@ void find_test_files(char** files) {
 	}
 
 
-	int num_files = 0;
+	*num_files = 0;
 
-	//do {
-	//	if (num_files == MAX_FILES) {
-	//		fprintf(stderr, "Too many files in directory\n");
-	//		break;
-	//	}
+	do {
+		if (num_files == MAX_FILES) {
+			fprintf(stderr, "Too many files in directory\n");
+			break;
+		}
 
-	//	if (strlen(findData.cFileName) == 0 || strspn(findData.cFileName, " \t\r\n") == strlen(findData.cFileName)) {
-	//		continue;
-	//	}
+		if (strlen(findData.cFileName) == 0 || strspn(findData.cFileName, " \t\r\n") == strlen(findData.cFileName)) {
+			continue;
+		}
 
-
-	//
-	//	
-	//	//size_t s = strlen(findData.cFileName) + 1;
-	//	//files[num_files] = (char*)malloc(s);
-	//	//
-	//	//if (strcpy_s(&files[num_files], s, findData.cFileName) != 0)
-	//	//{
-	//	//	printf("Error copying string: %d\n", errno);
-	//	//	return 1;
-	//	//}
-	//	num_files++;
-	//} while (FindNextFile(hFind, &findData) != 0);
-
+		size_t s = strlen(findData.cFileName) + 1;
+		files[(*num_files)] = (char*)malloc(s);
+		
+		if (strcpy_s(files[(*num_files)], s, findData.cFileName) != 0)
+		{
+			printf("Error copying string: %d\n", errno);
+			return 1;
+		}
+		(*num_files)++;
+	} while (FindNextFile(hFind, &findData) != 0);
 
 
 	// Close the search handle
 	FindClose(hFind);
 }
 
+/*
+	1 Best - neigbour 1
+
+	#define DEFAULT_RUNS 100.000
+	#define DEFAULT_TREPA_ITER 500
+	teste.txt -> 5 = MBF 
+	file1.txt -> 20, 19.999 MBF
+	file2.text -> 15
+	file3.txt -> 112
+	file4.txt -> 79
+	file5.txt -> 
+
+
+	2 Best - neigbour 1
+	#define DEFAULT_RUNS 10000
+	#define DEFAULT_TREPA_ITER 100
+
+	teste.txt -> 5 = MBF
+	file1.txt -> 20, 19.759501 MBF
+	file2.text -> 15, 14.557300 MBF
+	file3.txt -> 112, 105.328499 MBF
+	file4.txt -> 62, 30.740400 MBF
+	file5.txt -> 48, 20.850700 MBF
+
+
+	3 Best - neigbour 3
+	#define DEFAULT_RUNS 10000
+	#define DEFAULT_TREPA_ITER 100
+
+	teste.txt -> 5,  4.155600 = MBF
+	file1.txt -> 20, 19.115999 MBF
+	file2.text -> 15, 12.213600 MBF
+	file3.txt -> 112, 102.703300 MBF
+	file4.txt -> 48, 18.335400 MBF
+	file5.txt -> 34, 11.516500 MBF
+
+
+	4 Best - neigbour 2
+	#define DEFAULT_RUNS 10000
+	#define DEFAULT_TREPA_ITER 100
+
+	teste.txt -> 5,  3.864700 = MBF
+	file1.txt -> 20, 18.839199 MBF
+	file2.text -> 15, 14.417400 MBF
+	file3.txt -> 110, 102.142197 MBF
+	file4.txt -> 45, 16.268000 MBF
+	file5.txt -> 28, 9.194300 MBF
+
+
+*/
 int main(int argc, char* argv[])
 {
 	char    nome_fich[100];
 	int     runs;
-	//process_args(argc, argv, nome_fich, &runs);
-
-	/*if (argc < 2) {
-		fprintf(stderr, "Nao foi especificada a diretoria de ficheiros\n");
-		return 1;
-	}*/
-
-	// allocating memory for 1st dimension
-	char** files = (char**)malloc(MAX_FILES, sizeof(char*));
-
-
-
-	//todo complete the thread luncher for each file
-	for (int i = 0; i < MAX_FILES; i++)
-		// allocating memory for 2nd dimension
-	{
-		files[i] = (char*)calloc(30, sizeof(char));
-		scanf_s("%s", files[i]);
-	}
-
-	for (int i = 0; i < MAX_FILES; i++)
-		printf("%s\n", files[i]);
-
-	for (int i = 0; i < 10; i++) {
-		char* str = "some string";
-		size_t str_len = strlen(str) + 1;
-		strcpy_s(files[i], str_len, str);
-	}
-
-	//find_test_files(files);
-
-	//lunch_threads(files, 10);
-
-
+	char** files = (char**)calloc(MAX_FILES, sizeof(char*));
+	int numfiles = 0;
+	find_test_files(files,&numfiles);
 	init_rand();
+
+	lunch_threads(files, numfiles, DEFAULT_RUNS);
 
 	return 0;
 }

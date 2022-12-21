@@ -1,11 +1,12 @@
-﻿  main.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(23,30): warning C4090: 'function': different 'const' qualifiers
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(64,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(159,43): warning C4020: 'malloc': too many actual parameters
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(168,11): warning C4473: 'scanf_s' : not enough arguments passed for format string
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(168,11): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(168,11): message : the missing variadic argument 2 is required by format string '%s'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(168,11): message : this argument is used as a buffer size
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(150,10): warning C4101: 'runs': unreferenced local variable
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(149,10): warning C4101: 'nome_fich': unreferenced local variable
+﻿  algoritmo.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(36,13): warning C4101: 'p2': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(51,13): warning C4101: 'p2': unreferenced local variable
+  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(37,30): warning C4090: 'function': different 'const' qualifiers
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(73,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(130,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(145,12): warning C4098: 'find_test_files': 'void' function returning a value
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(196,10): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(195,10): warning C4101: 'nome_fich': unreferenced local variable
+  Generating Code...
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe

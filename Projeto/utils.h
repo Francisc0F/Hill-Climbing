@@ -11,3 +11,4 @@ void init_rand();
 int random_l_h(int min, int max);
 float rand_01();
 void process_args(int argc, char* argv[], char* filename, int* runs);
+void swap(int* a, int* b);

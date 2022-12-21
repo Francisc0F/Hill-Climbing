@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="algoritmo.h" />
     <ClInclude Include="funcao.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

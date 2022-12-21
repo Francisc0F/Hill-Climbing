@@ -23,6 +23,10 @@ typedef struct {
 void print_element(void* args, int i, int j, int tam) {
 	PrintArgs* a = (PrintArgs*)args;
 	printf("%d ", a->p[i * tam + j]);
+
+	if (j == tam - 1) {
+		printf("\n ");
+	}
 };
 
 typedef struct {
@@ -44,7 +48,6 @@ void execute_loop(LoopCode loop_code, int tam) {
 		for (int j = 0; j < tam; j++) {
 				loop_code.func(loop_code.args, i, j, tam);
 		}
-		printf("\n");
 	}
 }
 
@@ -107,9 +110,9 @@ int* init_dados(char* nome, int* vert, int* subsetNum)
 
 	fill_adjacent_matrix(f, p, vert);
 
-	PrintArgs pargs = {  .p = p };
+	/*PrintArgs pargs = {  .p = p };
 	LoopCode print = { print_element,.p = p, .args = &pargs };
-	execute_loop(print, *vert);
+	execute_loop(print, *vert);*/
 
 	fclose(f);
 	return p;
@@ -183,6 +186,14 @@ int random_l_h(int min, int max)
 float rand_01()
 {
 	return ((float)rand()) / RAND_MAX;
+}
+
+
+
+void swap(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
 
