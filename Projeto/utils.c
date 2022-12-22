@@ -1,3 +1,4 @@
+#include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -6,8 +7,6 @@
 // Leitura do ficheiro de input
 // Recebe: nome do ficheiro, numero de vertices (ptr), numero de iteracoes (ptr)
 // Devolve a matriz de adjacencias
-
-
 
 typedef void (*FuncPtr)(int*, int, int, int);
 typedef struct {
@@ -118,8 +117,13 @@ int* init_dados(char* nome, int* vert, int* subsetNum)
 	return p;
 }
 
-
-
+void reverse_vector(int* vector, int start, int end) {
+	while (start < end) {
+		swap(&vector[start], &vector[end]);
+		start++;
+		end--;
+	}
+}
 
 /*
  * Generates an initial solution
@@ -188,14 +192,11 @@ float rand_01()
 	return ((float)rand()) / RAND_MAX;
 }
 
-
-
 void swap(int* a, int* b) {
 	int temp = *a;
 	*a = *b;
 	*b = temp;
 }
-
 
 void process_args(int argc, char* argv[], char* filename, int* runs) {
 	// Set default values
@@ -223,4 +224,78 @@ void process_args(int argc, char* argv[], char* filename, int* runs) {
 	if (*runs <= 0) {
 		exit(0);
 	}
+}
+
+void print_general_results(const char* nome_fich, int vert, float mbf, int k, int* best, int best_custo)
+{
+	printf("-----------------------------------------\n");
+	printf("Ficheiro: %s\n", nome_fich);
+	printf("Vertices: %d\n", vert);
+	printf("MBF: %f\n", mbf / k);
+	printf("Melhor solucao encontrada\n");
+	escreve_sol(best, vert);
+	printf("Custo final: %2d\n", best_custo);
+	printf("-----------------------------------------\n\n");
+}
+
+void find_test_files(char** files, int* num_files) {
+	char currentDir[MAX_PATH];
+	GetCurrentDirectoryA(MAX_PATH, currentDir);
+
+	// Set the search pattern to look for .txt files
+	char* searchPattern = "*.txt";
+
+	// Combine the current directory path and search pattern into a full search string
+	char searchString[MAX_PATH];
+	sprintf_s(searchString, MAX_PATH, "%s\\%s", currentDir, searchPattern);
+
+	// Find the first file in the directory that matches the search pattern
+	WIN32_FIND_DATA findData = { 0 };
+	//Restriction needs to be set as multibyte in carater set
+	HANDLE hFind = FindFirstFile(searchString, &findData);
+	if (hFind == INVALID_HANDLE_VALUE)
+	{
+		printf("Error finding first file: %d\n", GetLastError());
+		exit(1);
+	}
+
+
+	*num_files = 0;
+
+	do {
+		if (num_files == MAX_FILES) {
+			fprintf(stderr, "Too many files in directory\n");
+			break;
+		}
+
+		if (strlen(findData.cFileName) == 0 || strspn(findData.cFileName, " \t\r\n") == strlen(findData.cFileName)) {
+			continue;
+		}
+
+		size_t s = strlen(findData.cFileName) + 1;
+		files[(*num_files)] = (char*)malloc(s);
+
+		if (strcpy_s(files[(*num_files)], s, findData.cFileName) != 0)
+		{
+			printf("Error copying string: %d\n", errno);
+			return 1;
+		}
+		(*num_files)++;
+	} while (FindNextFile(hFind, &findData) != 0);
+
+
+	// Close the search handle
+	FindClose(hFind);
+}
+
+
+/*
+	Coin flip 0 or 1
+*/
+int flip()
+{
+	if ((((float)rand()) / RAND_MAX) < 0.5)
+		return 0;
+	else
+		return 1;
 }

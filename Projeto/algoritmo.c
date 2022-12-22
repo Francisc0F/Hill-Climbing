@@ -1,3 +1,4 @@
+#include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "algoritmo.h"
@@ -54,13 +55,31 @@ void gera_vizinho3(int a[], int b[], int n)
 	for (i = 0; i < n; i++)
 		b[i] = a[i];
 
-	// Encontra posicao com valor 0
 	do {
 		p1 = random_l_h(0, n - 3);
 	} while (b[p1] == b[p1 + 2]);
 
 	swap(&b[p1], &b[p1 + 2]);
 }
+
+/* 
+	Reverse from random p1 below half and p2 above half
+
+*/
+void gera_vizinho4(int a[], int b[], int n)
+{
+	//copia elementos
+	for (int i = 0; i < n; i++)
+		b[i] = a[i];
+
+
+	int p1 = random_l_h(0, n / 2 - 1);
+	int p2 = random_l_h(n / 2, n -1);
+	//printf("pos %d , %d\n", p1, p2);
+
+	reverse_vector(b, p1, p2);
+}
+
 
 
 // Trepa colinas first-choice
@@ -79,7 +98,9 @@ int trepa_colinas(int sol[], int* mat, int vert, int num_iter)
 		// Gera vizinho
 		//gera_vizinho(sol, nova_sol, vert);
 		//gera_vizinho2(sol, nova_sol, vert);
-		gera_vizinho3(sol, nova_sol, vert);
+		//gera_vizinho3(sol, nova_sol, vert);
+		gera_vizinho4(sol, nova_sol, vert);
+
 		// Avalia vizinho
 		custo_viz = calcula_fit(nova_sol, mat, vert);
 		// Aceita vizinho se o custo aumentar (problema de maximizacao) e aceita planaltos
@@ -92,4 +113,83 @@ int trepa_colinas(int sol[], int* mat, int vert, int num_iter)
 	}
 	free(nova_sol);
 	return custo;
+}
+
+
+
+void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
+
+	int vert, num_iter = DEFAULT_TREPA_ITER, k, custo, best_custo, nConjunto;
+	int* grafo, * sol, * best;
+	float mbf = 0.0;
+
+	// Preenche matriz de adjacencias
+	grafo = init_dados(nome_fich, &vert, &nConjunto);
+	sol = allocate_matrix(1, vert);
+	best = allocate_matrix(1, vert);
+
+	for (k = 0; k < runs; k++)
+	{
+		// Gerar solucao inicial
+		gera_sol_inicial(sol, vert, nConjunto);
+		//escreve_sol(sol, vert);
+		// Trepa colinas
+		custo = trepa_colinas(sol, grafo, vert, num_iter);
+		// Escreve resultados da repeticao k
+		//printf("\nRepeticao %d:", k);
+		//escreve_sol(sol, vert);
+		//printf("Custo final: %2d\n", custo);
+		mbf += custo;
+		if (k == 0 || custo >= best_custo)
+		{
+			best_custo = custo;
+			substitui(best, sol, vert);
+		}
+	}
+
+	// Escreve resultados globais
+	print_general_results(nome_fich, vert, mbf, k, best, best_custo);
+
+
+	free(grafo);
+	free(sol);
+	free(best);
+}
+
+
+DWORD WINAPI process_file_trepa_colinas(LPVOID lpParameter) {
+	thread_arg_t* thread_arg = (thread_arg_t*)lpParameter;
+	printf("Processing file: %s\n", thread_arg->file);
+	run_for_file_trepa_colinas(thread_arg->file, thread_arg->runs);
+	return NULL;
+}
+
+
+void lunch_threads(char** files, int num_files, int runs) {
+	// Create a separate thread for each file
+	HANDLE threads[MAX_FILES] = { 0 };
+	for (int i = 0; i < num_files; i++) {
+		thread_arg_t* arg = (thread_arg_t*)malloc(sizeof(thread_arg_t));
+		if (arg == NULL) {
+			printf("Error Alocating thread_arg_t*)malloc(sizeof(thread_arg_t: %d\n", GetLastError());
+			exit(1);
+		}
+
+		arg->file = files[i];
+		arg->runs = runs;
+		threads[i] = CreateThread(NULL, 0, process_file_trepa_colinas, arg, 0, NULL);
+		if (threads[i] == NULL) {
+			printf("Error creating thread: %d\n", GetLastError());
+			exit(1);
+		}
+	}
+
+	// Wait for all threads to complete
+	WaitForMultipleObjects(num_files, threads, TRUE, INFINITE);
+
+	// Close handles to threads
+	for (int i = 0; i < num_files; i++) {
+		CloseHandle(threads[i]);
+	}
+	printf("All threads complete.\n");
 }
