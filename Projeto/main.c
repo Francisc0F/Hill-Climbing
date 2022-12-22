@@ -13,7 +13,7 @@
 
 /* 
 	[Trepa colinas]
-	1 Best - neigbour 1 [GUINESS]
+	[1] Best - neigbour 1 [GUINESS]
 
 	#define DEFAULT_RUNS 100.000
 	#define DEFAULT_TREPA_ITER 500
@@ -24,11 +24,11 @@
 	file4.txt -> 79
 	file5.txt -> 
 
-
-	2 Best - neigbour 1
+	[Trepa colinas]
+	[2] Best - neigbour 1
 	#define DEFAULT_RUNS 10000
 	#define DEFAULT_TREPA_ITER 100
-
+	
 	teste.txt -> 5 = MBF
 	file1.txt -> 20, 19.759501 MBF
 	file2.text -> 15, 14.557300 MBF
@@ -36,7 +36,7 @@
 	file4.txt -> 62, 30.740400 MBF
 	file5.txt -> 48, 20.850700 MBF
 
-
+	[Trepa colinas]
 	3 Best - neigbour 4
 	#define DEFAULT_RUNS 10000
 	#define DEFAULT_TREPA_ITER 100
@@ -48,7 +48,7 @@
 	file4.txt -> 42, 19.503401 MBF
 	file5.txt -> 32, 13.949200 MBF
 
-
+	[Trepa colinas]
 	4 Best - neigbour 3
 	#define DEFAULT_RUNS 10000
 	#define DEFAULT_TREPA_ITER 100
@@ -60,7 +60,7 @@
 	file4.txt -> 48, 18.335400 MBF
 	file5.txt -> 34, 11.516500 MBF
 
-
+	[Trepa colinas]
 	5 Best - neigbour 2
 	#define DEFAULT_RUNS 10000
 	#define DEFAULT_TREPA_ITER 100
@@ -82,7 +82,18 @@ int main(int argc, char* argv[])
 	find_test_files(files,&numfiles);
 	init_rand();
 
-	lunch_threads(files, numfiles, DEFAULT_RUNS);
+	//lunch_threads(files, numfiles, DEFAULT_RUNS);
+	
+
+	//TODO  genetic has mem problems and best ever is being invalid
+	info EA_param = { 0 };
+	EA_param.pm = DEFAULT_PM_RATE;
+	EA_param.pr = DEFAULT_PR_RATE;
+	EA_param.popsize = DEFAULT_POP_SIZE;
+	EA_param.tsize = DEFAULT_TOURNAMENT_SIZE;
+	EA_param.maxGenerations = DEFAULT_MAX_GENERATIONS;
+	lunch_threads_genetic(files, 1, DEFAULT_RUNS, EA_param);
+
 	return 0;
 }
 

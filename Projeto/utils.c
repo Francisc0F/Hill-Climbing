@@ -167,8 +167,12 @@ void escreve_sol(int* sol, int vert)
 }
 
 // copia vector b para a (tamanho n)
-void substitui(int a[], int b[], int n)
-{
+void copy_vector(int a[], int b[], int n)
+{	
+	if (a == NULL) {
+		a = allocate_matrix(1, n);
+	}
+
 	int i;
 	for (i = 0; i < n; i++)
 		a[i] = b[i];
@@ -232,7 +236,7 @@ void print_general_results(const char* nome_fich, int vert, float mbf, int k, in
 	printf("Ficheiro: %s\n", nome_fich);
 	printf("Vertices: %d\n", vert);
 	printf("MBF: %f\n", mbf / k);
-	printf("Melhor solucao encontrada\n");
+	printf("Melhor solucao encontrada");
 	escreve_sol(best, vert);
 	printf("Custo final: %2d\n", best_custo);
 	printf("-----------------------------------------\n\n");
@@ -298,4 +302,14 @@ int flip()
 		return 0;
 	else
 		return 1;
+}
+
+void wait_and_close_threads(int num_files, const HANDLE* threads) {
+	// Wait for all threads to complete
+	WaitForMultipleObjects(num_files, threads, TRUE, INFINITE);
+
+	// Close handles to threads
+	for (int i = 0; i < num_files; i++) {
+		CloseHandle(threads[i]);
+	}
 }

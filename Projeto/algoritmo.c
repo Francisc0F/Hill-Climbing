@@ -31,7 +31,6 @@ void gera_vizinho(int a[], int b[], int n)
 	b[p2] = 0;
 }
 
-
 void gera_vizinho2(int a[], int b[], int n)
 {
 	int i, p1, p2;
@@ -64,7 +63,6 @@ void gera_vizinho3(int a[], int b[], int n)
 
 /* 
 	Reverse from random p1 below half and p2 above half
-
 */
 void gera_vizinho4(int a[], int b[], int n)
 {
@@ -79,8 +77,6 @@ void gera_vizinho4(int a[], int b[], int n)
 
 	reverse_vector(b, p1, p2);
 }
-
-
 
 // Trepa colinas first-choice
 // Parametros: solucao, matriz de adjacencias, numero de vertices e numero de iteracoes
@@ -107,15 +103,13 @@ int trepa_colinas(int sol[], int* mat, int vert, int num_iter)
 		//queremos apanhar o maior numero de arestas entre os elementos
 		if (custo_viz >= custo)
 		{
-			substitui(sol, nova_sol, vert);
+			copy_vector(sol, nova_sol, vert);
 			custo = custo_viz;
 		}
 	}
 	free(nova_sol);
 	return custo;
 }
-
-
 
 void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 
@@ -143,19 +137,17 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 		if (k == 0 || custo >= best_custo)
 		{
 			best_custo = custo;
-			substitui(best, sol, vert);
+			copy_vector(best, sol, vert);
 		}
 	}
 
 	// Escreve resultados globais
 	print_general_results(nome_fich, vert, mbf, k, best, best_custo);
 
-
 	free(grafo);
 	free(sol);
 	free(best);
 }
-
 
 DWORD WINAPI process_file_trepa_colinas(LPVOID lpParameter) {
 	thread_arg_t* thread_arg = (thread_arg_t*)lpParameter;
@@ -163,7 +155,6 @@ DWORD WINAPI process_file_trepa_colinas(LPVOID lpParameter) {
 	run_for_file_trepa_colinas(thread_arg->file, thread_arg->runs);
 	return NULL;
 }
-
 
 void lunch_threads(char** files, int num_files, int runs) {
 	// Create a separate thread for each file
@@ -184,12 +175,7 @@ void lunch_threads(char** files, int num_files, int runs) {
 		}
 	}
 
-	// Wait for all threads to complete
-	WaitForMultipleObjects(num_files, threads, TRUE, INFINITE);
-
-	// Close handles to threads
-	for (int i = 0; i < num_files; i++) {
-		CloseHandle(threads[i]);
-	}
+	wait_and_close_threads(num_files, threads);
+	
 	printf("All threads complete.\n");
 }
