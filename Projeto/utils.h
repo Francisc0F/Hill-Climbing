@@ -4,17 +4,15 @@
 
 #define DEFAULT_TREPA_ITER 100
 
+//#define DEFAULT_RUNS 100
 #define DEFAULT_RUNS 100
-
 
 #define DEFAULT_PM_RATE 0.1
 #define DEFAULT_PR_RATE 0.1
-#define DEFAULT_POP_SIZE 30
+
+#define DEFAULT_POP_SIZE 30 // pair number only
 #define DEFAULT_TOURNAMENT_SIZE 2
-#define DEFAULT_MAX_GENERATIONS 500
-
-
-
+#define DEFAULT_MAX_GENERATIONS 300
 
 
 
@@ -29,13 +27,8 @@ int random_l_h(int min, int max);
 float rand_01();
 void process_args(int argc, char* argv[], char* filename, int* runs);
 void swap(int* a, int* b);
-
 void reverse_vector(int* vector, int start, int end);
-
 void print_general_results(const char* nome_fich, int vert, float mbf, int k, int* best, int best_custo);
-
 void find_test_files(char** files, int* num_files);
-
 int flip();
-
 void wait_and_close_threads(int num_files, const HANDLE* threads);

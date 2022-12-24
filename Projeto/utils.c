@@ -24,7 +24,7 @@ void print_element(void* args, int i, int j, int tam) {
 	printf("%d ", a->p[i * tam + j]);
 
 	if (j == tam - 1) {
-		printf("\n ");
+		printf("\n");
 	}
 };
 
@@ -233,10 +233,9 @@ void process_args(int argc, char* argv[], char* filename, int* runs) {
 void print_general_results(const char* nome_fich, int vert, float mbf, int k, int* best, int best_custo)
 {
 	printf("-----------------------------------------\n");
-	printf("Ficheiro: %s\n", nome_fich);
-	printf("Vertices: %d\n", vert);
-	printf("MBF: %f\n", mbf / k);
-	printf("Melhor solucao encontrada");
+	printf("Ficheiro: %s ", nome_fich);
+	printf("Vertices: %d ", vert);
+	printf("MBF: %f ", mbf / k);
 	escreve_sol(best, vert);
 	printf("Custo final: %2d\n", best_custo);
 	printf("-----------------------------------------\n\n");

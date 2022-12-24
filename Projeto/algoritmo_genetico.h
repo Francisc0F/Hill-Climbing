@@ -44,6 +44,8 @@ typedef struct {
     char* file;
     int runs;
     info EA_param;
+    float avg;
+    chrom best_ever;
 }thread_arg_genetic;
 
 void tournament(pchrom pop, info d, pchrom parents);
@@ -56,7 +58,7 @@ void mutation(pchrom offspring, info d);
 
 void write_best(chrom x, info d);
 
-void run_for_file_genetico(const char* nome_fich, int runs, info EA_param);
+void run_for_file_genetico(thread_arg_genetic* args);
 
 DWORD WINAPI process_file_genetico(LPVOID lpParameter);
 

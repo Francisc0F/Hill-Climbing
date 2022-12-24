@@ -10,9 +10,8 @@
 void copy_chrom(pchrom a, pchrom b, int numGenes) {
 	a->fitness = b->fitness;
 	a->valido = b->valido;
-
-	memmove(a->sol, b->sol, numGenes * sizeof(int));
-	//copy_vector(a->sol, b->sol, numGenes);
+	a->sol = allocate_matrix(1, numGenes);
+	memcpy(a->sol, b->sol, numGenes * sizeof(int));
 }
 
 
@@ -39,7 +38,7 @@ pchrom init_pop(info d)
 		indiv[i].sol = allocate_matrix(1, d.numGenes);
 
 		gera_sol_inicial(indiv[i].sol, d.numGenes, d.k);
-		
+
 		// this was allowing to start with invalid values, and was not allowing performance increase over time
 		/*for (j = 0; j < d.numGenes; j++)
 			indiv[i].sol[j] = flip();*/
@@ -60,6 +59,7 @@ float eval_individual(int sol[], info d, int* mat, int* valid)
 			number_of_group_1_elements++;
 		}
 	}
+
 
 	if (number_of_group_1_elements != d.k) {
 		*valid = 0;
@@ -98,10 +98,10 @@ void tournament(pchrom pop, info d, pchrom parents)
 		while (x1 == x2);
 		// maximization problem we wan the biggest cost, 
 		// meaning the biggest number of edges between the group 1 elements
-		if (pop[x1].fitness > pop[x2].fitness)		
-			parents[i] = pop[x1]; 
+		if (pop[x1].fitness > pop[x2].fitness)
+			copy_chrom(&parents[i], &parents[x1], d.numGenes);
 		else
-			parents[i] = pop[x2];
+			copy_chrom(&parents[i], &parents[x2], d.numGenes);
 	}
 }
 
@@ -127,27 +127,34 @@ void crossover(pchrom parents, info d, pchrom offspring)
 		if (rand_01() < d.pr)
 		{
 			point = random_l_h(0, d.numGenes - 1);
+			int* p = parents[i].sol;
+			int* p1 = parents[i + 1].sol;
+
+			int* o = offspring[i].sol;
+			int* o1 = offspring[i + 1].sol;
+
 			for (j = 0; j < point; j++)
 			{
-				offspring[i].sol[j] = parents[i].sol[j];
-				offspring[i + 1].sol[j] = parents[i + 1].sol[j];
+				o[j] = p[j];
+				o1[j] = p1[j];
 			}
+
+
 			for (j = point; j < d.numGenes; j++)
 			{
-				offspring[i].sol[j] = parents[i + 1].sol[j];
-				offspring[i + 1].sol[j] = parents[i].sol[j];
+				o[j] = p1[j];
+				o1[j] = p[j];
 			}
 		}
 		else
 		{
-			offspring[i] = parents[i];
-			offspring[i + 1] = parents[i + 1];
+			copy_chrom(&offspring[i], &parents[i], d.numGenes);
+			copy_chrom(&offspring[i + 1], &parents[i + 1], d.numGenes);
 		}
 	}
 }
 
-// Muta��o bin�ria com v�rios pontos de muta��o
-// Par�metros de entrada: estrutura com os descendentes (offspring) e estrutura com par�metros (d)
+// Single bit mutation
 void mutation(pchrom offspring, info d)
 {
 	for (int i = 0; i < d.popsize; i++)
@@ -156,12 +163,9 @@ void mutation(pchrom offspring, info d)
 				offspring[i].sol[j] = !(offspring[i].sol[j]);
 }
 
-
 chrom get_best(pchrom pop, info d, chrom best)
 {
-	int i;
-
-	for (i = 0; i < d.popsize; i++)
+	for (int i = 0; i < d.popsize; i++)
 	{
 		if (best.fitness <= pop[i].fitness)
 			copy_chrom(&best, &pop[i], d.numGenes);
@@ -169,59 +173,86 @@ chrom get_best(pchrom pop, info d, chrom best)
 	return best;
 }
 
-void print_general_results_genetico(const char* nome_fich, chrom best_ever, float mbf, int r, info EA_param)
+void print_general_results_genetico(const char* nome_fich, chrom best_ever, float avg, int r, info EA_param)
 {
 	printf("-----------------------------------------\n");
-	printf("Ficheiro: %s\n", nome_fich);
-	printf("\nMBF: %f", mbf / r);
-	printf("\nSubset k: %d", EA_param.k);
-	printf("\nMelhor solucao encontrada");
-	write_best(best_ever, EA_param);
+	printf("Ficheiro: %s", nome_fich);
+	printf(" MBF: %f", avg);
+	printf(" Subset k: %d", EA_param.k);
+	printf(" Custo: %f", best_ever.fitness);
+	//printf("\n best_ever valida = %d", best_ever.valido);
+	escreve_sol(best_ever.sol, EA_param.numGenes);
 	printf("-----------------------------------------\n\n");
 }
+pchrom initialize_parents(info EA_param) {
+	pchrom parents = calloc(EA_param.popsize, sizeof(chrom) * EA_param.popsize);
 
+	if (parents == NULL)
+	{
+		printf("Erro na alocacao de memoria\n");
+		exit(1);
+	}
 
-void run_for_file_genetico(const char* nome_fich, int runs, info EA_param) {
+	for (int i = 0; i < EA_param.popsize; i++)
+	{
+		parents[i].sol = allocate_matrix(1, EA_param.numGenes);
+		
+		for (int j = 0; j < EA_param.numGenes; j++)
+			parents[i].sol[j] = 0;
+	}
+
+	return parents;
+}
+
+void run_for_file_genetico(thread_arg_genetic* args) {
 	
+	info EA_param = args->EA_param;
+	char* nome_fich = args->file;
+	int runs  = args->runs;
 	
 	pchrom pop = NULL, parents = NULL;
-	chrom best_ever = {0};
+	chrom best_ever = { 0 };
 	best_ever.sol = allocate_matrix(1, EA_param.numGenes);
 	int vert, nConjunto;
 
 	int* adjacent_matrix = init_dados(nome_fich, &vert, &nConjunto);
-	
+
+	args->EA_param.numGenes = vert;
+	args->EA_param.k = nConjunto;
 	EA_param.numGenes = vert;
 	EA_param.k = nConjunto;
-	
+
 	float mbf = 0.0;
 	int r, gen_actual;
+
+	chrom best_run = { 0 };
+	best_run.sol = allocate_matrix(1, EA_param.numGenes);
+
 	// Do genetic runs times
 	for (r = 0; r < runs; r++)
 	{
-		chrom best_run = { 0 };
-		//printf("Genetic Repetition %d\n", r + 1);
+
 		// Generate initial population
 		pop = init_pop(EA_param);
+		//printf("best_ever\n");
+		//escreve_sol(best_ever.sol, EA_param.numGenes);
+
 		// Evaluate initial population
 		evaluate(pop, EA_param, adjacent_matrix);
 		gen_actual = 1;
-		
+
 		//Choose a first best individual 
-		best_run = pop[0];
+		//best_run = pop[0];
+		copy_chrom(&best_run, &pop[0], EA_param.numGenes);
 		best_run = get_best(pop, EA_param, best_run);
+		//printf("best_run\n");
+		//escreve_sol(best_run.sol, EA_param.numGenes);
 		// Reserva espa�o para os pais da popula��o seguinte
-		parents = malloc(sizeof(chrom) * EA_param.popsize);
-		if (parents == NULL)
-		{
-			printf("Erro na alocacao de memoria\n");
-			exit(1);
-		}
+		parents = initialize_parents(EA_param);
+
 		// Ciclo de optimiza��o
 		while (gen_actual <= EA_param.maxGenerations)
-		{	
-			//printf("Gen: %d\n", gen_actual);
-			// 
+		{
 			// Torneio bin�rio para encontrar os progenitores (ficam armazenados no vector parents)
 			tournament(pop, EA_param, parents);
 			// Aplica os operadores gen�ticos aos pais (os descendentes ficam armazenados na estrutura pop)
@@ -232,6 +263,7 @@ void run_for_file_genetico(const char* nome_fich, int runs, info EA_param) {
 			best_run = get_best(pop, EA_param, best_run);
 			gen_actual++;
 		}
+		
 		// Contagem das solu��es inv�lidas
 		int inv, i;
 		for (inv = 0, i = 0; i < EA_param.popsize; i++)
@@ -242,40 +274,39 @@ void run_for_file_genetico(const char* nome_fich, int runs, info EA_param) {
 		//write_best(best_run, EA_param);
 		//printf("\nPercentagem Invalidos: %f\n", 100 * (float)inv / EA_param.popsize);
 		mbf += best_run.fitness;
+		
 		if (r == 0 || best_run.fitness >= best_ever.fitness) {
-			best_ever = best_run;
-			//copy_chrom(&best_ever, &best_run, EA_param.numGenes);
+			copy_chrom(&best_ever, &best_run, EA_param.numGenes);
 		}
-			
-		// Liberta a mem�ria usada
+		
+		for (i = 0, inv = 0; i < EA_param.popsize; i++)
+		{
+			free(pop[i].sol);
+			free(parents[i].sol);
+		}
+
 		free(parents);
 		free(pop);
+		
 	}
-	print_general_results_genetico(nome_fich, best_ever, mbf, runs, EA_param);
+
+	copy_chrom(&args->best_ever, &best_ever, EA_param.numGenes);
+	args->avg = mbf / r;
 	free(adjacent_matrix);
 }
 
-
-// Escreve uma solu��o na consola
-// Par�metro de entrada: populacao actual (pop) e estrutura com par�metros (d)
 void write_best(chrom x, info d)
 {
-	int i;
-
 	printf("\nBest individual: %4.1f\n", x.fitness);
-	for (i = 0; i < d.numGenes; i++)
+	for (int i = 0; i < d.numGenes; i++)
 		printf("%d", x.sol[i]);
 	putchar('\n');
 }
 
-
-
-
 DWORD WINAPI process_file_genetico(LPVOID lpParameter) {
 	thread_arg_genetic* thread_arg = (thread_arg_genetic*)lpParameter;
 	printf("Genetico Processing file: %s\n", thread_arg->file);
-	run_for_file_genetico(thread_arg->file, thread_arg->runs, thread_arg->EA_param);
-
+	run_for_file_genetico(thread_arg);
 	printf("DONE - Genetico Processing file : % s\n", thread_arg->file);
 	return NULL;
 }
@@ -283,25 +314,32 @@ DWORD WINAPI process_file_genetico(LPVOID lpParameter) {
 void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param) {
 	// Create a separate thread for each file
 	HANDLE threads[MAX_FILES] = { 0 };
+	thread_arg_genetic* thread_args[MAX_FILES] = { 0 };
 	for (int i = 0; i < num_files; i++) {
 		thread_arg_genetic* arg = (thread_arg_genetic*)malloc(sizeof(thread_arg_genetic));
 		if (arg == NULL) {
 			printf("Error Alocating thread_arg_genetic*)malloc(sizeof(thread_arg_genetic: %d\n", GetLastError());
 			exit(1);
 		}
-
-		arg->file = files[5];
+		
+		arg->file = files[i];
 		arg->runs = runs;
 		arg->EA_param = EA_param;
+		thread_args[i] = arg;
 		threads[i] = CreateThread(NULL, 0, process_file_genetico, arg, 0, NULL);
+		
 		if (threads[i] == NULL) {
 			printf("Error creating thread: %d\n", GetLastError());
 			exit(1);
 		}
 	}
-
-
-	wait_and_close_threads(num_files, threads);
 	
+	wait_and_close_threads(num_files, threads);
+
+	for (size_t i = 0; i < num_files; i++)
+	{	
+		print_general_results_genetico(thread_args[i]->file, thread_args[i]->best_ever, thread_args[i]->avg, thread_args[i]->runs, thread_args[i]->EA_param);
+		free(thread_args[i]);
+	}
 	printf("All genetic threads complete.\n");
 }

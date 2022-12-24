@@ -82,18 +82,21 @@ int main(int argc, char* argv[])
 	find_test_files(files,&numfiles);
 	init_rand();
 
-	//lunch_threads(files, numfiles, DEFAULT_RUNS);
+	lunch_threads(files, numfiles, DEFAULT_RUNS);
 	
 
-	//TODO  genetic has mem problems and best ever is being invalid
 	info EA_param = { 0 };
 	EA_param.pm = DEFAULT_PM_RATE;
 	EA_param.pr = DEFAULT_PR_RATE;
 	EA_param.popsize = DEFAULT_POP_SIZE;
 	EA_param.tsize = DEFAULT_TOURNAMENT_SIZE;
 	EA_param.maxGenerations = DEFAULT_MAX_GENERATIONS;
-	lunch_threads_genetic(files, 1, DEFAULT_RUNS, EA_param);
+	lunch_threads_genetic(files, numfiles, DEFAULT_RUNS, EA_param);
 
+	//todo  create hibrid algorithm
+	//lunch_threads_hibrid(files, numfiles, DEFAULT_RUNS, EA_param);
+	
+	
 	return 0;
 }
 
