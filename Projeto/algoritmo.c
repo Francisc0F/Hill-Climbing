@@ -137,12 +137,12 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 		if (k == 0 || custo >= best_custo)
 		{
 			best_custo = custo;
-			copy_vector(best, sol, vert);
+			copy_vector_no_aloc(best, sol, vert);
 		}
 	}
 
 	// Escreve resultados globais
-	print_general_results(nome_fich, vert, mbf, k, best, best_custo);
+	print_general_results(nome_fich, runs, mbf, nConjunto, best, best_custo);
 
 	free(grafo);
 	free(sol);
@@ -151,7 +151,7 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 
 DWORD WINAPI process_file_trepa_colinas(LPVOID lpParameter) {
 	thread_arg_t* thread_arg = (thread_arg_t*)lpParameter;
-	printf("Processing file: %s\n", thread_arg->file);
+	//printf("Processing file: %s\n", thread_arg->file);
 	run_for_file_trepa_colinas(thread_arg->file, thread_arg->runs);
 	return NULL;
 }
@@ -177,5 +177,5 @@ void lunch_threads(char** files, int num_files, int runs) {
 
 	wait_and_close_threads(num_files, threads);
 	
-	printf("All threads complete.\n");
+	//printf("All threads complete.\n");
 }

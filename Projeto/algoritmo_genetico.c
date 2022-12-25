@@ -14,6 +14,11 @@ void copy_chrom(pchrom a, pchrom b, int numGenes) {
 	memcpy(a->sol, b->sol, numGenes * sizeof(int));
 }
 
+void copy_chrom_no_aloc(pchrom a, pchrom b, int numGenes) {
+	a->fitness = b->fitness;
+	a->valido = b->valido;
+	memcpy(a->sol, b->sol, numGenes * sizeof(int));
+}
 
 /*
 	Creates initial population
@@ -99,9 +104,10 @@ void tournament(pchrom pop, info d, pchrom parents)
 		// maximization problem we wan the biggest cost, 
 		// meaning the biggest number of edges between the group 1 elements
 		if (pop[x1].fitness > pop[x2].fitness)
-			copy_chrom(&parents[i], &parents[x1], d.numGenes);
+			copy_chrom_no_aloc(&parents[i], &parents[x1], d.numGenes);
 		else
-			copy_chrom(&parents[i], &parents[x2], d.numGenes);
+			copy_chrom_no_aloc(&parents[i], &parents[x2], d.numGenes);
+		
 	}
 }
 
@@ -148,8 +154,8 @@ void crossover(pchrom parents, info d, pchrom offspring)
 		}
 		else
 		{
-			copy_chrom(&offspring[i], &parents[i], d.numGenes);
-			copy_chrom(&offspring[i + 1], &parents[i + 1], d.numGenes);
+			copy_chrom_no_aloc(&offspring[i], &parents[i], d.numGenes);
+			copy_chrom_no_aloc(&offspring[i + 1], &parents[i + 1], d.numGenes);
 		}
 	}
 }
@@ -168,21 +174,18 @@ chrom get_best(pchrom pop, info d, chrom best)
 	for (int i = 0; i < d.popsize; i++)
 	{
 		if (best.fitness <= pop[i].fitness)
-			copy_chrom(&best, &pop[i], d.numGenes);
+			copy_chrom_no_aloc(&best, &pop[i], d.numGenes);
 	}
 	return best;
 }
 
 void print_general_results_genetico(const char* nome_fich, chrom best_ever, float avg, int r, info EA_param)
 {
-	printf("-----------------------------------------\n");
-	printf("Ficheiro: %s", nome_fich);
-	printf(" MBF: %f", avg);
-	printf(" Subset k: %d", EA_param.k);
-	printf(" Custo: %f", best_ever.fitness);
+	
+	//printf("\nGenetico      - Ficheiro: %10s, Subset k: %3d, MBF: %10f , Custo: %3f", nome_fich, EA_param.k, avg, best_ever.fitness);
+	printf("\nGenetico      - %10s, MBF: %10f , Custo: %3f, Pop: %2d, Pr: %2f, Pm: %2f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
 	//printf("\n best_ever valida = %d", best_ever.valido);
-	escreve_sol(best_ever.sol, EA_param.numGenes);
-	printf("-----------------------------------------\n\n");
+	//escreve_sol(best_ever.sol, EA_param.numGenes);
 }
 pchrom initialize_parents(info EA_param) {
 	pchrom parents = calloc(EA_param.popsize, sizeof(chrom) * EA_param.popsize);
@@ -212,7 +215,6 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 	
 	pchrom pop = NULL, parents = NULL;
 	chrom best_ever = { 0 };
-	best_ever.sol = allocate_matrix(1, EA_param.numGenes);
 	int vert, nConjunto;
 
 	int* adjacent_matrix = init_dados(nome_fich, &vert, &nConjunto);
@@ -225,12 +227,11 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 	float mbf = 0.0;
 	int r, gen_actual;
 
-	chrom best_run = { 0 };
-	best_run.sol = allocate_matrix(1, EA_param.numGenes);
 
 	// Do genetic runs times
 	for (r = 0; r < runs; r++)
 	{
+		chrom best_run = { 0 };
 
 		// Generate initial population
 		pop = init_pop(EA_param);
@@ -277,15 +278,14 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 		
 		if (r == 0 || best_run.fitness >= best_ever.fitness) {
 			copy_chrom(&best_ever, &best_run, EA_param.numGenes);
+			free(best_run.sol);
 		}
 		
-		for (i = 0, inv = 0; i < EA_param.popsize; i++)
-		{
-			free(pop[i].sol);
-			free(parents[i].sol);
-		}
-
 		free(parents);
+
+		for (int x = 0; x < EA_param.popsize; x++)
+			free(pop[x].sol);
+		
 		free(pop);
 		
 	}
@@ -293,6 +293,7 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 	copy_chrom(&args->best_ever, &best_ever, EA_param.numGenes);
 	args->avg = mbf / r;
 	free(adjacent_matrix);
+	free(best_ever.sol);
 }
 
 void write_best(chrom x, info d)
@@ -305,9 +306,9 @@ void write_best(chrom x, info d)
 
 DWORD WINAPI process_file_genetico(LPVOID lpParameter) {
 	thread_arg_genetic* thread_arg = (thread_arg_genetic*)lpParameter;
-	printf("Genetico Processing file: %s\n", thread_arg->file);
+	//printf("Genetico Processing file: %s\n", thread_arg->file);
 	run_for_file_genetico(thread_arg);
-	printf("DONE - Genetico Processing file : % s\n", thread_arg->file);
+	//printf("DONE - Genetico Processing file : % s\n", thread_arg->file);
 	return NULL;
 }
 
@@ -341,5 +342,5 @@ void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param)
 		print_general_results_genetico(thread_args[i]->file, thread_args[i]->best_ever, thread_args[i]->avg, thread_args[i]->runs, thread_args[i]->EA_param);
 		free(thread_args[i]);
 	}
-	printf("All genetic threads complete.\n");
+	//printf("All genetic threads complete.\n");
 }

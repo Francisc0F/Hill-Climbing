@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 
 	lunch_threads(files, numfiles, DEFAULT_RUNS);
 	
-
+	printf("\n ----------------------------------------------------------------------------");
 	info EA_param = { 0 };
 	EA_param.pm = DEFAULT_PM_RATE;
 	EA_param.pr = DEFAULT_PR_RATE;

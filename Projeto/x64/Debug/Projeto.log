@@ -1,10 +1,20 @@
-﻿  algoritmo_genetico.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(25,13): warning C4101: 'j': unreferenced local variable
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(71,9): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(311,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+﻿  algoritmo.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(36,13): warning C4101: 'p2': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(51,13): warning C4101: 'p2': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(121,30): warning C4090: 'function': different 'const' qualifiers
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(156,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+  algoritmo_genetico.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(30,13): warning C4101: 'j': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(76,9): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(312,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(89,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(90,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(79,10): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(78,10): warning C4101: 'nome_fich': unreferenced local variable
   utils.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(224,3): warning C4013: 'gets' undefined; assuming extern returning int
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(269,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(284,12): warning C4098: 'find_test_files': 'void' function returning a value
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(231,3): warning C4013: 'gets' undefined; assuming extern returning int
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(276,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(291,12): warning C4098: 'find_test_files': 'void' function returning a value
   Generating Code...
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe

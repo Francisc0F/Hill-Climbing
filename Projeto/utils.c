@@ -178,6 +178,13 @@ void copy_vector(int a[], int b[], int n)
 		a[i] = b[i];
 }
 
+void copy_vector_no_aloc(int a[], int b[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		a[i] = b[i];
+}
+
 // Inicializa o gerador de numeros aleatorios
 void init_rand()
 {
@@ -230,15 +237,15 @@ void process_args(int argc, char* argv[], char* filename, int* runs) {
 	}
 }
 
-void print_general_results(const char* nome_fich, int vert, float mbf, int k, int* best, int best_custo)
+void print_general_results(const char* nome_fich, int runs, float mbf, int k, int* best, int best_custo)
 {
-	printf("-----------------------------------------\n");
-	printf("Ficheiro: %s ", nome_fich);
-	printf("Vertices: %d ", vert);
-	printf("MBF: %f ", mbf / k);
-	escreve_sol(best, vert);
-	printf("Custo final: %2d\n", best_custo);
-	printf("-----------------------------------------\n\n");
+	//printf("\nTrepa colinas - Ficheiro: %10s, Subset k: %3d, MBF: %10f , Custo: %3d", nome_fich, k, (mbf / runs), best_custo);
+
+	printf("\nTrepa colinas - %10s, MBF: %10f , Custo: %3d", nome_fich, (mbf / runs), best_custo);
+
+	//printf("Vertices: %d ", vert);
+	//printf("MBF: %f ", mbf / k);
+	//escreve_sol(best, vert);
 }
 
 void find_test_files(char** files, int* num_files) {
