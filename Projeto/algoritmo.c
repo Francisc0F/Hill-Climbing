@@ -143,7 +143,7 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 
 	// Escreve resultados globais
 	print_general_results(nome_fich, runs, mbf, nConjunto, best, best_custo);
-
+	
 	free(grafo);
 	free(sol);
 	free(best);
