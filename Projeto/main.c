@@ -75,23 +75,46 @@
 */
 int main(int argc, char* argv[])
 {  
-	char    nome_fich[100];
-	int     runs;
+	char nome_fich[100];
+	int runs;
 	char** files = (char**)calloc(MAX_FILES, sizeof(char*));
 	int numfiles = 0;
 	find_test_files(files,&numfiles);
 	init_rand();
 
-	lunch_threads(files, numfiles, DEFAULT_RUNS);
+	// iter change
+	printf("\nIter variation 100, 200, 500, 1000 -----");
+	int runs_iter[] = { DEFAULT_RUNS,200, 500, 1000 };
+	for (int i = 0; i < 4; i++) {
+		printf("\n runs_iter[i] %d-----", runs_iter[i]);
+		lunch_threads(files, numfiles, runs_iter[i], 1, 0);
+	}
+	printf("\n-----------------------------------------");
+	printf("\nAccept greater variation iter 500 -----");
+	lunch_threads(files, numfiles, 500, 0, 1);
+	printf("\nAccept equal variation iter 500 -----");
+	lunch_threads(files, numfiles, 500, 1, 1);
+	printf("\n-----------------------------------------");
 	
-	printf("\n ----------------------------------------------------------------------------");
+	// variation each neighbour
+	printf("\nNeighbour variation 1,2,3,4  -----");
+	for (int i = 0; i < 4; i++) {
+		printf("\nneighbour %d-----", i + 1);
+		lunch_threads(files, numfiles, 500, i + 1, 0);
+	}
+	printf("\n-----------------------------------------");
+	
+
+	
+	/*
+	printf("\n----------------------------------------------------------------------------");
 	info EA_param = { 0 };
 	EA_param.pm = DEFAULT_PM_RATE;
 	EA_param.pr = DEFAULT_PR_RATE;
 	EA_param.popsize = DEFAULT_POP_SIZE;
 	EA_param.tsize = DEFAULT_TOURNAMENT_SIZE;
 	EA_param.maxGenerations = DEFAULT_MAX_GENERATIONS;
-	lunch_threads_genetic(files, numfiles, DEFAULT_RUNS, EA_param);
+	lunch_threads_genetic(files, numfiles, DEFAULT_RUNS, EA_param);*/
 
 	//todo  create hibrid algorithm
 	//lunch_threads_hibrid(files, numfiles, DEFAULT_RUNS, EA_param);

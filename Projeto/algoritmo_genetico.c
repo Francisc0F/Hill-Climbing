@@ -122,6 +122,73 @@ void genetic_operators(pchrom parents, info d, pchrom offspring)
 	mutation(offspring, d);
 }
 
+void crossover_2_points(pchrom parents, info d, pchrom offspring)
+{
+	int i, j, point1, point2;
+
+	for (i = 0; i < d.popsize; i += 2)
+	{
+		if (rand_01() < d.pr)
+		{
+			point1 = random_l_h(0, d.numGenes - 1);
+			point2 = random_l_h(point1 + 1, d.numGenes);
+			for (j = 0; j < point1; j++)
+			{
+				offspring[i].sol[j] = parents[i].sol[j];
+				offspring[i + 1].sol[j] = parents[i + 1].sol[j];
+			}
+			for (j = point1; j < point2; j++)
+			{
+				offspring[i].sol[j] = parents[i + 1].sol[j];
+				offspring[i + 1].sol[j] = parents[i].sol[j];
+			}
+			for (j = point2; j < d.numGenes; j++)
+			{
+				offspring[i].sol[j] = parents[i].sol[j];
+				offspring[i + 1].sol[j] = parents[i + 1].sol[j];
+			}
+		}
+		else
+		{
+			copy_chrom_no_aloc(&offspring[i], &parents[i], d.numGenes);
+			copy_chrom_no_aloc(&offspring[i + 1], &parents[i + 1], d.numGenes);
+		}
+	}
+	
+}
+
+
+void crossover_uniform(pchrom parents, info d, pchrom offspring)
+{
+	int i, j;
+	for (i = 0; i < d.popsize; i += 2)
+	{
+		if (rand_01() < d.pr)
+		{
+			for (j = 0; j < d.numGenes; j++)
+			{
+				if (flip() == 1)
+				{
+					offspring[i].sol[j] = parents[i].sol[j];
+					offspring[i + 1].sol[j] = parents[i + 1].sol[j];
+				}
+				else
+				{
+					offspring[i].sol[j] = parents[i + 1].sol[j];
+					offspring[i + 1].sol[j] = parents[i].sol[j];
+				}
+			}
+		}
+		else
+		{
+			copy_chrom_no_aloc(&offspring[i], &parents[i], d.numGenes);
+			copy_chrom_no_aloc(&offspring[i + 1], &parents[i + 1], d.numGenes);
+		}
+	}
+}
+
+
+
 // Preenche o vector descendentes com o resultado das opera��es de recombina��o
 // Par�metros de entrada: estrutura com os pais (parents), estrutura com par�metros (d), estrutura que guardar� os descendentes (offspring)
 void crossover(pchrom parents, info d, pchrom offspring)

@@ -81,7 +81,7 @@ void gera_vizinho4(int a[], int b[], int n)
 // Trepa colinas first-choice
 // Parametros: solucao, matriz de adjacencias, numero de vertices e numero de iteracoes
 // Devolve o custo da melhor solucao encontrada
-int trepa_colinas(int sol[], int* mat, int vert, int num_iter)
+int trepa_colinas(int sol[], int* mat, int vert, int num_iter, int neighour, int accept_equal)
 {
 	int* nova_sol, custo, custo_viz, i;
 
@@ -92,26 +92,44 @@ int trepa_colinas(int sol[], int* mat, int vert, int num_iter)
 	for (i = 0; i < num_iter; i++)
 	{
 		// Gera vizinho
-		//gera_vizinho(sol, nova_sol, vert);
-		//gera_vizinho2(sol, nova_sol, vert);
-		//gera_vizinho3(sol, nova_sol, vert);
-		gera_vizinho4(sol, nova_sol, vert);
+		if (neighour == 1) {
+			gera_vizinho(sol, nova_sol, vert);
+		}
+		else if (neighour == 2) {
+			gera_vizinho2(sol, nova_sol, vert);
+		}
+		else if (neighour == 3) {
+			gera_vizinho3(sol, nova_sol, vert);
+		}
+		else if (neighour == 4) {
+			gera_vizinho4(sol, nova_sol, vert);
+		}
 
 		// Avalia vizinho
 		custo_viz = calcula_fit(nova_sol, mat, vert);
 		// Aceita vizinho se o custo aumentar (problema de maximizacao) e aceita planaltos
 		//queremos apanhar o maior numero de arestas entre os elementos
-		if (custo_viz >= custo)
-		{
-			copy_vector(sol, nova_sol, vert);
-			custo = custo_viz;
+		if (accept_equal == 1) {
+			if (custo_viz >= custo)
+			{
+				copy_vector(sol, nova_sol, vert);
+				custo = custo_viz;
+			}
 		}
+		else if (accept_equal == 0) {
+			if (custo_viz > custo)
+			{
+				copy_vector(sol, nova_sol, vert);
+				custo = custo_viz;
+			}
+		}
+		
 	}
 	free(nova_sol);
 	return custo;
 }
 
-void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
+void run_for_file_trepa_colinas(const char* nome_fich, int runs, int neighour, int accept_equal) {
 
 	int vert, num_iter = DEFAULT_TREPA_ITER, k, custo, best_custo, nConjunto;
 	int* grafo, * sol, * best;
@@ -126,18 +144,23 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 	{
 		// Gerar solucao inicial
 		gera_sol_inicial(sol, vert, nConjunto);
-		//escreve_sol(sol, vert);
-		// Trepa colinas
-		custo = trepa_colinas(sol, grafo, vert, num_iter);
-		// Escreve resultados da repeticao k
-		//printf("\nRepeticao %d:", k);
-		//escreve_sol(sol, vert);
-		//printf("Custo final: %2d\n", custo);
+		custo = trepa_colinas(sol, grafo, vert, num_iter, neighour, accept_equal);
 		mbf += custo;
-		if (k == 0 || custo >= best_custo)
-		{
-			best_custo = custo;
-			copy_vector_no_aloc(best, sol, vert);
+		
+		if (accept_equal == 1) {
+
+			if (k == 0 || custo >= best_custo)
+			{
+				best_custo = custo;
+				copy_vector_no_aloc(best, sol, vert);
+			}
+		}
+		else if (accept_equal == 0) {
+			if (k == 0 || custo > best_custo)
+			{
+				best_custo = custo;
+				copy_vector_no_aloc(best, sol, vert);
+			}
 		}
 	}
 
@@ -152,11 +175,11 @@ void run_for_file_trepa_colinas(const char* nome_fich, int runs) {
 DWORD WINAPI process_file_trepa_colinas(LPVOID lpParameter) {
 	thread_arg_t* thread_arg = (thread_arg_t*)lpParameter;
 	//printf("Processing file: %s\n", thread_arg->file);
-	run_for_file_trepa_colinas(thread_arg->file, thread_arg->runs);
+	run_for_file_trepa_colinas(thread_arg->file, thread_arg->runs, thread_arg->neighour, thread_arg->accept_equal);
 	return NULL;
 }
 
-void lunch_threads(char** files, int num_files, int runs) {
+void lunch_threads(char** files, int num_files, int runs, int neighour, int accept_equal) {
 	// Create a separate thread for each file
 	HANDLE threads[MAX_FILES] = { 0 };
 	for (int i = 0; i < num_files; i++) {
@@ -168,6 +191,8 @@ void lunch_threads(char** files, int num_files, int runs) {
 
 		arg->file = files[i];
 		arg->runs = runs;
+		arg->neighour = neighour;
+		arg->accept_equal = accept_equal;
 		threads[i] = CreateThread(NULL, 0, process_file_trepa_colinas, arg, 0, NULL);
 		if (threads[i] == NULL) {
 			printf("Error creating thread: %d\n", GetLastError());

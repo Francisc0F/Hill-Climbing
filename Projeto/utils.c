@@ -109,10 +109,11 @@ int* init_dados(char* nome, int* vert, int* subsetNum)
 
 	fill_adjacent_matrix(f, p, vert);
 
-	/*PrintArgs pargs = {  .p = p };
+	/*
+	PrintArgs pargs = {.p = p};
 	LoopCode print = { print_element,.p = p, .args = &pargs };
-	execute_loop(print, *vert);*/
-
+	execute_loop(print, *vert);
+	*/
 	fclose(f);
 	return p;
 }
@@ -147,6 +148,13 @@ void gera_sol_inicial(int* sol, int v, int subsetNum)
 		while (sol[x] != 0);
 		sol[x] = 1;
 	}
+}
+
+void escreve_sol_bin(int* sol, int vert)
+{
+	for (int i = 0; i < vert; i++)
+		printf("%d", sol[i]);
+	putchar('\n');
 }
 
 // Escreve solucao

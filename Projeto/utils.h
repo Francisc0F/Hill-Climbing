@@ -33,3 +33,4 @@ void find_test_files(char** files, int* num_files);
 int flip();
 void wait_and_close_threads(int num_files, const HANDLE* threads);
 void copy_vector_no_aloc(int a[], int b[], int n);
+void escreve_sol_bin(int* sol, int vert);
