@@ -1,4 +1,5 @@
-﻿  main.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(79,6): warning C4101: 'runs': unreferenced local variable
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(78,7): warning C4101: 'nome_fich': unreferenced local variable
+﻿  utils.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(239,3): warning C4013: 'gets' undefined; assuming extern returning int
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(286,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(301,12): warning C4098: 'find_test_files': 'void' function returning a value
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe

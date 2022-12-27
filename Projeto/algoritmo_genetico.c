@@ -104,9 +104,9 @@ void tournament(pchrom pop, info d, pchrom parents)
 		// maximization problem we wan the biggest cost, 
 		// meaning the biggest number of edges between the group 1 elements
 		if (pop[x1].fitness > pop[x2].fitness)
-			copy_chrom_no_aloc(&parents[i], &parents[x1], d.numGenes);
+			copy_chrom_no_aloc(&parents[i], &pop[x1], d.numGenes);
 		else
-			copy_chrom_no_aloc(&parents[i], &parents[x2], d.numGenes);
+			copy_chrom_no_aloc(&parents[i], &pop[x2], d.numGenes);
 		
 	}
 }

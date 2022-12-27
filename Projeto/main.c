@@ -86,20 +86,20 @@ int main(int argc, char* argv[])
 	printf("\nIter variation 100, 200, 500, 1000 -----");
 	int runs_iter[] = { DEFAULT_RUNS,200, 500, 1000 };
 	for (int i = 0; i < 4; i++) {
-		printf("\n runs_iter[i] %d-----", runs_iter[i]);
+		printf("\n%d", runs_iter[i]);
 		lunch_threads(files, numfiles, runs_iter[i], 1, 0);
 	}
 	printf("\n-----------------------------------------");
-	printf("\nAccept greater variation iter 500 -----");
+	printf("\nAccept greater variation iter 500");
 	lunch_threads(files, numfiles, 500, 0, 1);
-	printf("\nAccept equal variation iter 500 -----");
+	printf("\nAccept equal variation iter 500");
 	lunch_threads(files, numfiles, 500, 1, 1);
 	printf("\n-----------------------------------------");
 	
 	// variation each neighbour
 	printf("\nNeighbour variation 1,2,3,4  -----");
 	for (int i = 0; i < 4; i++) {
-		printf("\nneighbour %d-----", i + 1);
+		printf("\nneighbour %d", i + 1);
 		lunch_threads(files, numfiles, 500, i + 1, 0);
 	}
 	printf("\n-----------------------------------------");

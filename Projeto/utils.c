@@ -249,7 +249,9 @@ void print_general_results(const char* nome_fich, int runs, float mbf, int k, in
 {
 	//printf("\nTrepa colinas - Ficheiro: %10s, Subset k: %3d, MBF: %10f , Custo: %3d", nome_fich, k, (mbf / runs), best_custo);
 
-	printf("\nTrepa colinas - %10s, MBF: %10f , Custo: %3d", nome_fich, (mbf / runs), best_custo);
+	//printf("\nTrepa colinas - %10s, MBF: %10f , Custo: %3d", nome_fich, (mbf / runs), best_custo);
+
+	printf("\n%s,%f,%d", nome_fich, (mbf / runs), best_custo);
 
 	//printf("Vertices: %d ", vert);
 	//printf("MBF: %f ", mbf / k);
