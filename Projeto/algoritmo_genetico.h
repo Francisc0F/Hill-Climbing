@@ -10,8 +10,6 @@ typedef struct
     float pr;
     // tournament size
     int tsize;
-    // Constante para avalia��o com penaliza��o
-    float ro;
 
     // Number of bits in individual sol
     int numGenes;
@@ -43,6 +41,7 @@ struct individual
 typedef struct {
     char* file;
     int runs;
+    int recombination_opt;
     info EA_param;
     float avg;
     chrom best_ever;
@@ -62,4 +61,4 @@ void run_for_file_genetico(thread_arg_genetic* args);
 
 DWORD WINAPI process_file_genetico(LPVOID lpParameter);
 
-void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param);
+void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param, int recombination_opt);

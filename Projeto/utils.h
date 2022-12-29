@@ -10,7 +10,7 @@
 #define DEFAULT_PM_RATE 0.01
 #define DEFAULT_PR_RATE 0.1
 
-#define DEFAULT_POP_SIZE 30 // pair number only
+#define DEFAULT_POP_SIZE 10 // pair number only
 #define DEFAULT_TOURNAMENT_SIZE 2
 #define DEFAULT_MAX_GENERATIONS 100
 

@@ -1,5 +1,13 @@
-﻿  utils.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(239,3): warning C4013: 'gets' undefined; assuming extern returning int
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(286,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(301,12): warning C4098: 'find_test_files': 'void' function returning a value
+﻿  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(44,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(45,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(57,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(67,19): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(68,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(78,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(79,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(91,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(92,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(167,6): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(166,7): warning C4101: 'nome_fich': unreferenced local variable
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe

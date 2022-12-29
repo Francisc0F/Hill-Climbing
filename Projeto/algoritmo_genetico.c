@@ -107,19 +107,8 @@ void tournament(pchrom pop, info d, pchrom parents)
 			copy_chrom_no_aloc(&parents[i], &pop[x1], d.numGenes);
 		else
 			copy_chrom_no_aloc(&parents[i], &pop[x2], d.numGenes);
-		
+
 	}
-}
-
-// Operadores geneticos a usar na gera��o dos filhos
-// Par�metros de entrada: estrutura com os pais (parents), estrutura com par�metros (d), estrutura que guardar� os descendentes (offspring)
-void genetic_operators(pchrom parents, info d, pchrom offspring)
-{
-	// Crossover at one point
-	crossover(parents, d, offspring);
-
-	// Mutation of single bit
-	mutation(offspring, d);
 }
 
 void crossover_2_points(pchrom parents, info d, pchrom offspring)
@@ -154,7 +143,7 @@ void crossover_2_points(pchrom parents, info d, pchrom offspring)
 			copy_chrom_no_aloc(&offspring[i + 1], &parents[i + 1], d.numGenes);
 		}
 	}
-	
+
 }
 
 
@@ -186,6 +175,24 @@ void crossover_uniform(pchrom parents, info d, pchrom offspring)
 		}
 	}
 }
+
+
+
+// Operadores geneticos a usar na gera��o dos filhos
+// Par�metros de entrada: estrutura com os pais (parents), estrutura com par�metros (d), estrutura que guardar� os descendentes (offspring)
+void genetic_operators(pchrom parents, info d, pchrom offspring, int recombination_opt)
+{
+	// Crossover
+	switch (recombination_opt) {
+	case	1: crossover(parents, d, offspring); break;
+	case	2: crossover_2_points(parents, d, offspring); break;
+	case	3: crossover_uniform(parents, d, offspring); break;
+	};
+
+	// Mutation of single bit
+	mutation(offspring, d);
+}
+
 
 
 
@@ -248,9 +255,11 @@ chrom get_best(pchrom pop, info d, chrom best)
 
 void print_general_results_genetico(const char* nome_fich, chrom best_ever, float avg, int r, info EA_param)
 {
-	
+
 	//printf("\nGenetico      - Ficheiro: %10s, Subset k: %3d, MBF: %10f , Custo: %3f", nome_fich, EA_param.k, avg, best_ever.fitness);
-	printf("\nGenetico      - %10s, MBF: %10f , Custo: %3f, Pop: %2d, Pr: %2f, Pm: %2f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
+	//printf("\nGenetico      - %10s, MBF: %10f , Custo: %3f, Pop: %2d, Pr: %2f, Pm: %2f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
+	//printf("\n%10s,%f,%f,Pop: %d,Pr: %f,Pm: %f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
+	printf("\n%10s,%f,%f", nome_fich, avg, best_ever.fitness);
 	//printf("\n best_ever valida = %d", best_ever.valido);
 	//escreve_sol(best_ever.sol, EA_param.numGenes);
 }
@@ -266,7 +275,7 @@ pchrom initialize_parents(info EA_param) {
 	for (int i = 0; i < EA_param.popsize; i++)
 	{
 		parents[i].sol = allocate_matrix(1, EA_param.numGenes);
-		
+
 		for (int j = 0; j < EA_param.numGenes; j++)
 			parents[i].sol[j] = 0;
 	}
@@ -275,11 +284,12 @@ pchrom initialize_parents(info EA_param) {
 }
 
 void run_for_file_genetico(thread_arg_genetic* args) {
-	
+
 	info EA_param = args->EA_param;
 	char* nome_fich = args->file;
-	int runs  = args->runs;
-	
+	int runs = args->runs;
+	int recombination_opt = args->recombination_opt;
+
 	pchrom pop = NULL, parents = NULL;
 	chrom best_ever = { 0 };
 	int vert, nConjunto;
@@ -324,14 +334,14 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 			// Torneio bin�rio para encontrar os progenitores (ficam armazenados no vector parents)
 			tournament(pop, EA_param, parents);
 			// Aplica os operadores gen�ticos aos pais (os descendentes ficam armazenados na estrutura pop)
-			genetic_operators(parents, EA_param, pop);
+			genetic_operators(parents, EA_param, pop, recombination_opt);
 			// Avalia a nova popula��o (a dos filhos)
 			evaluate(pop, EA_param, adjacent_matrix);
 			// Actualiza a melhor solu��o encontrada
 			best_run = get_best(pop, EA_param, best_run);
 			gen_actual++;
 		}
-		
+
 		// Contagem das solu��es inv�lidas
 		int inv, i;
 		for (inv = 0, i = 0; i < EA_param.popsize; i++)
@@ -342,19 +352,19 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 		//write_best(best_run, EA_param);
 		//printf("\nPercentagem Invalidos: %f\n", 100 * (float)inv / EA_param.popsize);
 		mbf += best_run.fitness;
-		
+
 		if (r == 0 || best_run.fitness >= best_ever.fitness) {
 			copy_chrom(&best_ever, &best_run, EA_param.numGenes);
 			free(best_run.sol);
 		}
-		
+
 		free(parents);
 
 		for (int x = 0; x < EA_param.popsize; x++)
 			free(pop[x].sol);
-		
+
 		free(pop);
-		
+
 	}
 
 	copy_chrom(&args->best_ever, &best_ever, EA_param.numGenes);
@@ -379,7 +389,7 @@ DWORD WINAPI process_file_genetico(LPVOID lpParameter) {
 	return NULL;
 }
 
-void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param) {
+void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param, int recombination_opt) {
 	// Create a separate thread for each file
 	HANDLE threads[MAX_FILES] = { 0 };
 	thread_arg_genetic* thread_args[MAX_FILES] = { 0 };
@@ -389,23 +399,25 @@ void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param)
 			printf("Error Alocating thread_arg_genetic*)malloc(sizeof(thread_arg_genetic: %d\n", GetLastError());
 			exit(1);
 		}
-		
+
 		arg->file = files[i];
 		arg->runs = runs;
+		arg->runs = runs;
 		arg->EA_param = EA_param;
+		arg->recombination_opt = recombination_opt;
 		thread_args[i] = arg;
 		threads[i] = CreateThread(NULL, 0, process_file_genetico, arg, 0, NULL);
-		
+
 		if (threads[i] == NULL) {
 			printf("Error creating thread: %d\n", GetLastError());
 			exit(1);
 		}
 	}
-	
+
 	wait_and_close_threads(num_files, threads);
 
 	for (size_t i = 0; i < num_files; i++)
-	{	
+	{
 		print_general_results_genetico(thread_args[i]->file, thread_args[i]->best_ever, thread_args[i]->avg, thread_args[i]->runs, thread_args[i]->EA_param);
 		free(thread_args[i]);
 	}
