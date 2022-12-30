@@ -174,49 +174,11 @@ int main(int argc, char* argv[])
 	//hill_climbing_results(files, numfiles);
 
 	printf("\n----------------------------------------------------------------------------");
-	genetic_results(files, numfiles);
-
+	//genetic_results(files, numfiles);
+	
 	//todo  create hibrid algorithm
 	//lunch_threads_hibrid(files, numfiles, DEFAULT_RUNS, EA_param);
 
 
 	return 0;
 }
-
-
-
-// test reverse from random p1 to p2
-//void print_v(int* vector, int n) {
-//	for (int i = 0; i < n; i++) {
-//		printf("%d ", vector[i]);
-//	}
-//	printf("\n");
-//}
-//
-
-
-//int main(int argc, char* argv[])
-//{
-//	int vector[6];
-//	int n = 6;
-//	for (int i = 0; i < n; i++) {
-//		if (i < 3) {
-//			vector[i] = 0;
-//		}
-//		else {
-//			vector[i] = 1;
-//		}
-//	}
-//
-//	print_v(vector, n);
-//
-//	for (int i = 0; i < 10; i++) {
-//
-//		int novo[6];
-//		gera_vizinho4(vector, novo, n);
-//		printf("Novo: \n");
-//		print_v(novo, n);
-//	}
-//
-//}
-

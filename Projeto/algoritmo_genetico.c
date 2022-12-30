@@ -296,7 +296,7 @@ void run_for_file_genetico(thread_arg_genetic* args) {
 
 	int* adjacent_matrix = init_dados(nome_fich, &vert, &nConjunto);
 
-	args->EA_param.numGenes = vert;
+	args->EA_param.numGenes = vert;	
 	args->EA_param.k = nConjunto;
 	EA_param.numGenes = vert;
 	EA_param.k = nConjunto;
