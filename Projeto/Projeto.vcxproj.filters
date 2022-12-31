@@ -30,6 +30,12 @@
     <ClCompile Include="algoritmo_genetico.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="algoritmo_hibrid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="algoritmo_hibrid.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algoritmo.h">

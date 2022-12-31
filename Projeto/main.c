@@ -4,6 +4,7 @@
 #include <string.h>
 #include "algoritmo.h"
 #include "algoritmo_genetico.h"
+#include "algoritmo_hibrid.h"
 #include "utils.h"
 #include "main.h"
 
@@ -99,66 +100,49 @@ void genetic_results(char** files, int numfiles) {
 
 }
 
+void genetic_hibrid_results(char** files, int numfiles) {
+	
+	printf("\nhibrid results -----");
+	for (int i = 0; i < 4; i++) {
+		info paramsPr = { 0 };
+		paramsPr.pm = DEFAULT_PM_RATE;
+		paramsPr.pr = DEFAULT_PR_RATE;
+		paramsPr.popsize = DEFAULT_POP_SIZE;
+		paramsPr.tsize = DEFAULT_TOURNAMENT_SIZE;
+		paramsPr.maxGenerations = DEFAULT_MAX_GENERATIONS;
+		printf("\nThreads variation %d", i);
+		lunch_threads_hibrid(files, numfiles, 500, paramsPr, 1, i, 500);
+		printf("\n--------------------------");
+	}
+}
+
+
+void best_results(char** files, int numfiles) {
+
+	printf("\nhibrid results -----");
+	for (int i = 0; i < 4; i++) {
+		info paramsPr = { 0 };
+		paramsPr.pm = DEFAULT_PM_RATE + 0.05;
+		paramsPr.pr = 0.7;
+		paramsPr.popsize = DEFAULT_POP_SIZE * 5;
+		paramsPr.tsize = DEFAULT_TOURNAMENT_SIZE;
+		paramsPr.maxGenerations = DEFAULT_MAX_GENERATIONS * 1.8;
+		printf("\nThreads variation %d", i);
+		lunch_threads_hibrid(files, numfiles, 500, paramsPr, 1, i, 500);
+		printf("\n--------------------------");
+	}
+}
+
 /*
-	[Trepa colinas]
-	[1] Best - neigbour 1 [GUINESS]
-
-	#define DEFAULT_RUNS 100.000
-	#define DEFAULT_TREPA_ITER 500
-	teste.txt -> 5 = MBF
-	file1.txt -> 20, 19.999 MBF
-	file2.text -> 15
-	file3.txt -> 112
-	file4.txt -> 79
-	file5.txt ->
-
-	[Trepa colinas]
-	[2] Best - neigbour 1
-	#define DEFAULT_RUNS 10000
-	#define DEFAULT_TREPA_ITER 100
-
-	teste.txt -> 5 = MBF
-	file1.txt -> 20, 19.759501 MBF
-	file2.text -> 15, 14.557300 MBF
-	file3.txt -> 112, 105.328499 MBF
-	file4.txt -> 62, 30.740400 MBF
-	file5.txt -> 48, 20.850700 MBF
-
-	[Trepa colinas]
-	3 Best - neigbour 4
-	#define DEFAULT_RUNS 10000
-	#define DEFAULT_TREPA_ITER 100
-
-	teste.txt -> 5 , 4.923800 MBF
-	file1.txt -> 20, 19.236300 MBF
-	file2.text -> 15, 12.623200 MBF
-	file3.txt -> 110, 101.429497 MBF
-	file4.txt -> 42, 19.503401 MBF
-	file5.txt -> 32, 13.949200 MBF
-
-	[Trepa colinas]
-	4 Best - neigbour 3
-	#define DEFAULT_RUNS 10000
-	#define DEFAULT_TREPA_ITER 100
-
-	teste.txt -> 5,  4.155600 = MBF
-	file1.txt -> 20, 19.115999 MBF
-	file2.text -> 15, 12.213600 MBF
-	file3.txt -> 112, 102.703300 MBF
-	file4.txt -> 48, 18.335400 MBF
-	file5.txt -> 34, 11.516500 MBF
-
-	[Trepa colinas]
-	5 Best - neigbour 2
-	#define DEFAULT_RUNS 10000
-	#define DEFAULT_TREPA_ITER 100
-
-	teste.txt -> 5,  3.864700 = MBF
-	file1.txt -> 20, 18.839199 MBF
-	file2.text -> 15, 14.417400 MBF
-	file3.txt -> 110, 102.142197 MBF
-	file4.txt -> 45, 16.268000 MBF
-	file5.txt -> 28, 9.194300 MBF
+	[hibrid - config 3 ]
+	[1] Best - PM:0.06 PR:0.7 POPSIZE: 50 MAX_GEN: 180, genetic_runs:500, inner_trepa: 500
+			  Média    Custo
+	teste.txt,5.000000,5.000000
+	file1.txt,20.000000,20.000000
+	file2.txt,15.000000,15.000000
+	file3.txt,112.000000,112.000000
+	file4.txt,76.954002,79.000000
+	file5.txt,72.650002,91.000000
 
 */
 int main(int argc, char* argv[])
@@ -173,12 +157,13 @@ int main(int argc, char* argv[])
 
 	//hill_climbing_results(files, numfiles);
 
-	printf("\n----------------------------------------------------------------------------");
+	//printf("\n----------------------------------------------------------------------------");
 	//genetic_results(files, numfiles);
 	
 	//todo  create hibrid algorithm
-	//lunch_threads_hibrid(files, numfiles, DEFAULT_RUNS, EA_param);
+	//genetic_hibrid_results(files, numfiles);
 
-
+	// best
+	best_results(files, numfiles);
 	return 0;
 }

@@ -52,7 +52,6 @@ pchrom init_pop(info d)
 }
 
 
-
 float eval_individual(int sol[], info d, int* mat, int* valid)
 {
 	// subset

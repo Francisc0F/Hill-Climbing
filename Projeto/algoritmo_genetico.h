@@ -1,5 +1,5 @@
-﻿
-
+﻿#pragma once
+#include "Windows.h"
 typedef struct 
 {
     // population size
@@ -22,7 +22,6 @@ typedef struct
     int maxGenerations;
 }info;
 
-// Individual (solution)
 typedef struct individual chrom, * pchrom;
 
 struct individual
@@ -49,7 +48,7 @@ typedef struct {
 
 void tournament(pchrom pop, info d, pchrom parents);
 
-void genetic_operators(pchrom parents, info d, pchrom offspring);
+void genetic_operators(pchrom parents, info d, pchrom offspring, int recombination);
 
 void crossover(pchrom parents, info d, pchrom offspring);
 
@@ -62,3 +61,15 @@ void run_for_file_genetico(thread_arg_genetic* args);
 DWORD WINAPI process_file_genetico(LPVOID lpParameter);
 
 void lunch_threads_genetic(char** files, int num_files, int runs, info EA_param, int recombination_opt);
+
+pchrom initialize_parents(info EA_param);
+
+chrom get_best(pchrom pop, info d, chrom best);
+
+void copy_chrom(pchrom a, pchrom b, int numGenes);
+
+void copy_chrom_no_aloc(pchrom a, pchrom b, int numGenes);
+
+pchrom init_pop(info d);
+
+void evaluate(pchrom pop, info d, int* mat);

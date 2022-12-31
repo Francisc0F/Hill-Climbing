@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClCompile Include="algoritmo.c" />
     <ClCompile Include="algoritmo_genetico.c" />
+    <ClCompile Include="algoritmo_hibrid.c" />
+    <ClCompile Include="algoritmo_hibrid.h" />
     <ClCompile Include="funcao.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="utils.c" />

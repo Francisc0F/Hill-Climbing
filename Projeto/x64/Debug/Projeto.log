@@ -1,13 +1,18 @@
 ﻿  main.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(44,32): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(45,32): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(57,31): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(67,19): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(68,31): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(78,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(46,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(58,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(68,19): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(69,31): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(79,32): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(91,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(80,32): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(92,32): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(167,6): warning C4101: 'runs': unreferenced local variable
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(166,7): warning C4101: 'nome_fich': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(93,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(108,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(109,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(125,39): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(126,20): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(129,53): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(201,6): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(200,7): warning C4101: 'nome_fich': unreferenced local variable
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe
