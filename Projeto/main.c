@@ -123,19 +123,29 @@ void best_results(char** files, int numfiles) {
 	for (int i = 0; i < 4; i++) {
 		info paramsPr = { 0 };
 		paramsPr.pm = DEFAULT_PM_RATE + 0.05;
-		paramsPr.pr = 0.7;
-		paramsPr.popsize = DEFAULT_POP_SIZE * 5;
+		paramsPr.pr = 0.8;
+		paramsPr.popsize = DEFAULT_POP_SIZE * 10;
 		paramsPr.tsize = DEFAULT_TOURNAMENT_SIZE;
-		paramsPr.maxGenerations = DEFAULT_MAX_GENERATIONS * 1.8;
+		paramsPr.maxGenerations = DEFAULT_MAX_GENERATIONS * 2;
 		printf("\nThreads variation %d", i);
-		lunch_threads_hibrid(files, numfiles, 500, paramsPr, 1, i, 500);
+		lunch_threads_hibrid(files, numfiles, 700, paramsPr, 1, i, 700);
 		printf("\n--------------------------");
 	}
 }
 
 /*
 	[hibrid - config 3 ]
-	[1] Best - PM:0.06 PR:0.7 POPSIZE: 50 MAX_GEN: 180, genetic_runs:500, inner_trepa: 500
+	[1] Best - PM:0.06 PR:0.8 POPSIZE: 100 MAX_GEN: 200, genetic_runs:700, inner_trepa: 700
+			  Média    Custo
+	 file1.txt,20.000000,20.000000
+	 file2.txt,15.000000,15.000000
+	 file3.txt,112.000000,112.000000
+	 file4.txt,78.978569,79.000000
+	 file5.txt,83.481430,98.000000
+	 teste.txt,5.000000,5.000000
+
+	[hibrid - config 3 ]
+	[2] Best - PM:0.06 PR:0.7 POPSIZE: 50 MAX_GEN: 180, genetic_runs:500, inner_trepa: 500
 			  Média    Custo
 	teste.txt,5.000000,5.000000
 	file1.txt,20.000000,20.000000

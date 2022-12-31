@@ -12,7 +12,6 @@ C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(108,32): warning
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(109,32): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(125,39): warning C4305: '=': truncation from 'double' to 'float'
 C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(126,20): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(129,53): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(201,6): warning C4101: 'runs': unreferenced local variable
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(200,7): warning C4101: 'nome_fich': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(151,6): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(150,7): warning C4101: 'nome_fich': unreferenced local variable
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe
