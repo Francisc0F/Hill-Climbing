@@ -8,8 +8,10 @@
 #include "utils.h"
 #include "main.h"
 
-
-
+/*
+ 	A variation contains the same config for each file
+	All hill climbing variations documented
+*/
 void hill_climbing_results(char** files, int numfiles) {
 	// iter change
 	printf("\nIter variation 100, 200, 500, 1000 -----");
@@ -37,6 +39,10 @@ void hill_climbing_results(char** files, int numfiles) {
 
 }
 
+/*
+ 	A variation contains the same config for each file
+	All genetic variations documented
+*/
 void genetic_results(char** files, int numfiles) {
 	printf("\nIter variation 100, 200, 500, 1000 -----");
 	int runs_iter[] = { DEFAULT_RUNS,200, 500, 1000 };
@@ -100,9 +106,14 @@ void genetic_results(char** files, int numfiles) {
 
 }
 
+
+/*	
+	A variation contains the same config for each file
+	All hibrid variations, simple genetic, hibrid 1, hibrid 2
+*/
 void genetic_hibrid_results(char** files, int numfiles) {
 	
-	printf("\nhibrid results -----");
+	printf("\nhibrid results ----- simple genetic, hibrid 1 (start), hibrid 2 (end), hibrid 3(both)");
 	for (int i = 0; i < 4; i++) {
 		info paramsPr = { 0 };
 		paramsPr.pm = DEFAULT_PM_RATE;
@@ -117,6 +128,13 @@ void genetic_hibrid_results(char** files, int numfiles) {
 }
 
 
+
+/*
+	A variation contains the same config for each file
+	All hibrid variations, simple genetic, hibrid 1, hibrid 2
+
+	to much time to run....
+*/
 void best_results(char** files, int numfiles) {
 
 	printf("\nhibrid results -----");
@@ -132,6 +150,48 @@ void best_results(char** files, int numfiles) {
 		printf("\n--------------------------");
 	}
 }
+
+
+void menu(char** files, int numfiles) {
+	int choice;
+
+	while (1) {
+		printf("\nMenu:\n");
+		printf("1. hill_climbing_results\n");
+		printf("2. genetic_results\n");
+		printf("3. genetic_hibrid_results\n");
+		printf("4. Best(warning go have lunch and come back time complexity...)\n");
+		printf("5. Quit\n");
+		printf("Enter your choice: ");
+
+		scanf_s("%d", &choice);
+
+		switch (choice) {
+		case 1:
+			printf("You selected Option 1\n");
+			hill_climbing_results(files, numfiles);
+			break;
+		case 2:
+			printf("You selected Option 2\n");
+			genetic_results(files, numfiles);
+			break;
+		case 3:
+			printf("You selected Option 3\n");
+			genetic_hibrid_results(files, numfiles);
+			break;
+		case 4:
+			printf("You selected Option 4\n");
+			best_results(files, numfiles);
+		case 5: 
+			printf("Quitting...\n");
+			exit(0);
+		default:
+			printf("Invalid choice\n");
+			break;
+		}
+	}
+}
+
 
 /*
 	[hibrid - config 3 ]
@@ -163,17 +223,7 @@ int main(int argc, char* argv[])
 	int numfiles = 0;
 	find_test_files(files, &numfiles);
 	init_rand();
-
-
-	//hill_climbing_results(files, numfiles);
-
-	//printf("\n----------------------------------------------------------------------------");
-	//genetic_results(files, numfiles);
 	
-	//todo  create hibrid algorithm
-	//genetic_hibrid_results(files, numfiles);
-
-	// best
-	best_results(files, numfiles);
+	menu(files, numfiles);
 	return 0;
 }

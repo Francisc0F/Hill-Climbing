@@ -258,6 +258,9 @@ void print_general_results(const char* nome_fich, int runs, float mbf, int k, in
 	//escreve_sol(best, vert);
 }
 
+/*
+	Read files from current directory
+*/
 void find_test_files(char** files, int* num_files) {
 	char currentDir[MAX_PATH];
 	GetCurrentDirectoryA(MAX_PATH, currentDir);
@@ -281,6 +284,7 @@ void find_test_files(char** files, int* num_files) {
 
 
 	*num_files = 0;
+	printf("Detecting files in current directory...\n");
 
 	do {
 		if (num_files == MAX_FILES) {
@@ -294,7 +298,8 @@ void find_test_files(char** files, int* num_files) {
 
 		size_t s = strlen(findData.cFileName) + 1;
 		files[(*num_files)] = (char*)malloc(s);
-
+		printf("file: %s\n", findData.cFileName);
+		
 		if (strcpy_s(files[(*num_files)], s, findData.cFileName) != 0)
 		{
 			printf("Error copying string: %d\n", errno);

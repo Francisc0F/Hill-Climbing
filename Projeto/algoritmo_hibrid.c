@@ -106,13 +106,7 @@ void run_for_file_genetico_hibrid(thread_arg_genetic_hibrid* args) {
 
 void print_general_results_hibrid(const char* nome_fich, chrom best_ever, float avg, int r, info EA_param)
 {
-
-	//printf("\nGenetico      - Ficheiro: %10s, Subset k: %3d, MBF: %10f , Custo: %3f", nome_fich, EA_param.k, avg, best_ever.fitness);
-	//printf("\nGenetico      - %10s, MBF: %10f , Custo: %3f, Pop: %2d, Pr: %2f, Pm: %2f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
-	//printf("\n%10s,%f,%f,Pop: %d,Pr: %f,Pm: %f", nome_fich, avg, best_ever.fitness, EA_param.popsize, EA_param.pr, EA_param.pm);
 	printf("\n%10s,%f,%f", nome_fich, avg, best_ever.fitness);
-	//printf("\n best_ever valida = %d", best_ever.valido);
-	//escreve_sol(best_ever.sol, EA_param.numGenes);
 }
 
 void lunch_threads_hibrid(char** files, int num_files, int runs, info EA_param, int recombination_opt, int hibrid_opt, int trepa_colinas_runs) {
