@@ -61,6 +61,7 @@ void fill_adjacent_matrix(FILE* f, int* p, int* vert)
 			auxI--;
 			auxJ--;
 			p[auxI * (*vert) + auxJ] = 1;
+			p[auxJ * (*vert) + auxI] = 1;
 		}
 	} while (count > 0);
 }
@@ -109,11 +110,11 @@ int* init_dados(char* nome, int* vert, int* subsetNum)
 
 	fill_adjacent_matrix(f, p, vert);
 
-	/*
-	PrintArgs pargs = {.p = p};
-	LoopCode print = { print_element,.p = p, .args = &pargs };
-	execute_loop(print, *vert);
-	*/
+	
+	//PrintArgs pargs = {.p = p};
+	//LoopCode print = { print_element,.p = p, .args = &pargs };
+	//execute_loop(print, *vert);
+	
 	fclose(f);
 	return p;
 }

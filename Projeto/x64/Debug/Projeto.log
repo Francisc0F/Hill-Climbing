@@ -1,5 +1,33 @@
-﻿  utils.c
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(239,3): warning C4013: 'gets' undefined; assuming extern returning int
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(290,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
-C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(306,12): warning C4098: 'find_test_files': 'void' function returning a value
+﻿  algoritmo.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(36,13): warning C4101: 'p2': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(51,13): warning C4101: 'p2': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(139,30): warning C4090: 'function': different 'const' qualifiers
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo.c(179,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+  algoritmo_genetico.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(30,13): warning C4101: 'j': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(75,9): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_genetico.c(388,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+  algoritmo_hibrid.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\algoritmo_hibrid.c(13,13): warning C4047: 'return': 'DWORD' differs in levels of indirection from 'void *'
+  main.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(52,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(53,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(65,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(75,19): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(76,31): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(86,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(87,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(99,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(100,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(120,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(121,32): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(144,39): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(145,20): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(222,6): warning C4101: 'runs': unreferenced local variable
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\main.c(221,7): warning C4101: 'nome_fich': unreferenced local variable
+  utils.c
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(240,3): warning C4013: 'gets' undefined; assuming extern returning int
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(291,29): warning C4047: '==': 'int *' differs in levels of indirection from 'int'
+C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\Projeto\utils.c(307,12): warning C4098: 'find_test_files': 'void' function returning a value
+  Generating Code...
   Projeto.vcxproj -> C:\Users\Francisco\Desktop\IA_Trabalho_Pratico_2\x64\Debug\Projeto.exe

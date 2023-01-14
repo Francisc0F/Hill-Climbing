@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "algoritmo.h"
+#include "funcao.h"
 #include "algoritmo_genetico.h"
 #include "algoritmo_hibrid.h"
 #include "utils.h"
@@ -227,3 +228,11 @@ int main(int argc, char* argv[])
 	menu(files, numfiles);
 	return 0;
 }
+
+// tests
+//int main(int argc, char* argv[])
+//{
+//	calcula_fit_tests();
+//	return 0;
+//}
+

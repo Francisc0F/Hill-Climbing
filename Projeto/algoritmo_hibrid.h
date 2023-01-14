@@ -1,5 +1,4 @@
 #include "algoritmo_genetico.h"
-#pragma once
 
 typedef struct {
     char* file;
